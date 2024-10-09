@@ -1,0 +1,131 @@
+{
+  "api": {
+    "names": [
+      "the_first_house",
+      "the_second_house",
+      "the_third_house",
+      "the_fourth_house",
+      "the_fifth_house",
+      "the_sixth_house"
+    ],
+    "descriptions": [
+      "the_first_long_full_description",
+      "the_second_long_full_description",
+      "the_third_long_full_description",
+      "the_fourth_long_full_description",
+      "the_fifth_long_full_description",
+      "the_sixth_long_full_description"
+    ],
+    "publicationDates": [
+      "2023-04-15T12:30:00.123Z",
+      "2025-11-22T18:15:45.456Z",
+      "2024-07-08T09:05:30.789Z",
+      "2026-03-01T21:20:15.000Z",
+      "2022-12-25T00:00:00.999Z",
+      "2027-01-10T14:50:50.654Z"
+    ],
+    "cityNames": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam",
+      "Hamburg",
+      "Dusseldorf"
+    ],
+    "previews": [
+      "preview1.jpg",
+      "preview2.jpg",
+      "preview3.jpg",
+      "preview4.jpg",
+      "preview5.jpg",
+      "preview6.jpg"
+    ],
+    "photos": [
+      "apartment-01.jpg",
+      "apartment-02.jpg",
+      "apartment-03.jpg",
+      "apartment-04.jpg",
+      "apartment-05.jpg",
+      "apartment-06.jpg",
+      "apartment-07.jpg",
+      "apartment-08.jpg",
+      "apartment-09.jpg",
+      "apartment-10.jpg",
+      "apartment-11.jpg",
+      "apartment-12.jpg",
+      "apartment-13.jpg",
+      "apartment-14.jpg",
+      "apartment-15.jpg",
+      "apartment-16.jpg",
+      "apartment-17.jpg",
+      "apartment-18.jpg"
+    ],
+    "housingTypes": [
+      "apartment",
+      "house",
+      "room",
+      "hotel"
+    ],
+    "facilities": [
+      "Breakfast",
+      "Air conditioning",
+      "Laptop friendly workspace",
+      "Baby seat",
+      "Washer",
+      "Towels",
+      "Fridge"
+    ],
+    "userNames": [
+      "user_name1",
+      "user_name2",
+      "user_name3",
+      "user_name4",
+      "user_name5",
+      "user_name6"
+    ],
+    "emails": [
+      "email1@gmail.com",
+      "email2@gmail.com",
+      "email3@gmail.com",
+      "email4@gmail.com",
+      "email5@gmail.com",
+      "email6@gmail.com"
+    ],
+    "avatarPathes": [
+      "avatar_path1.jpg",
+      "avatar_path2.jpg",
+      "avatar_path3.jpg",
+      "avatar_path4.jpg",
+      "avatar_path5.jpg",
+      "avatar_path6.jpg"
+    ],
+    "passwords": [
+      "password1_salt!@#",
+      "password2_salt$%^",
+      "password3_salt&*(",
+      "password4_salt)_+",
+      "password5_salt~`",
+      "password6_salt-={}"
+    ],
+    "userTypes": [
+      "Standart",
+      "Pro"
+    ],
+    "latitudes": [
+      "48.85661",
+      "50.938361",
+      "50.846557",
+      "52.370216",
+      "53.550341",
+      "51.225402"
+    ],
+    "longitudes": [
+      "2.351499",
+      "6.959974",
+      "4.351697",
+      "4.895168",
+      "10.000654",
+      "6.776314"
+    ]
+  }
+}

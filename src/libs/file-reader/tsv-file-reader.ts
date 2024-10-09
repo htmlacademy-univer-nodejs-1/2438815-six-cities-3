@@ -30,7 +30,7 @@ export class TSVFileReader implements FileReader {
         publicationDate: new Date(publicationDate),
         cityName,
         preview,
-        photos: photos.split(';').map((title) => title),
+        photos: photos.split(';'),
         premium: premium !== 'false',
         favorites: favorites !== 'false',
         rating: Number.parseInt(rating, 10),
