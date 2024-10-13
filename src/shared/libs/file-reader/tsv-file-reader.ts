@@ -1,4 +1,4 @@
-import { FileReader } from '../file-reader.interface.js';
+import { FileReader } from './file-reader.interface.js';
 import { readFileSync } from 'node:fs';
 import { Offer, HousingType, UserType, Facilities } from '../../types/index.js';
 
