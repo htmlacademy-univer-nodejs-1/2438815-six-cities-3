@@ -3,10 +3,14 @@ import { Command } from './command.interface.js';
 import { MockServerData } from '../../shared/types/index.js';
 import { TSVOfferGenerator } from '../../shared/libs/offer-generator/index.js';
 import { getErrorMessage } from '../../shared/helpers/index.js';
-//import { TSVFileWriter } from '../../shared/libs/file-writer/index.js';
+import { TSVFileWriter } from '../../shared/libs/file-writer/index.js';
 
 export class GenerateCommand implements Command {
   private initialData!: MockServerData;
+  private readonly name = '--generate';
+  public getName(): string {
+    return this.name;
+  }
 
   private async load(url: string) {
     try {
@@ -25,15 +29,10 @@ export class GenerateCommand implements Command {
     }
   }
 
-  public getName(): string {
-    return '--generate';
-  }
-
   public async execute(...parameters: string[]): Promise<void> {
     const [count, filepath, url] = parameters;
-    const offerCount = Number.parseInt(count, 10);
-
     try {
+      const offerCount = Number.parseInt(count, 10);
       await this.load(url);
       await this.write(filepath, offerCount);
       console.info(`File ${filepath} was created!`);
