@@ -1,5 +1,9 @@
+import 'reflect-metadata';
+import { injectable } from 'inversify';
 import { Logger as PinoInstance, pino } from 'pino';
 import { Logger } from './logger.interface.js';
+
+@injectable()
 export class PinoLogger implements Logger {
   private readonly logger: PinoInstance;
   constructor() {
