@@ -15,11 +15,8 @@ export class RestConfig implements Config<RestSchema> {
     }
 
     configRestSchema.load({});
-    try {
-      configRestSchema.validate({allowed: 'strict', output: this.logger.info});
-    } catch {
-      this.logger.error('.env file parsed with error...', new Error('.env file parsing error'));
-    }
+
+    configRestSchema.validate({allowed: 'strict', output: this.logger.info});
     this.config = configRestSchema.getProperties();
     this.logger.info('.env file successfully parsed.');
 
