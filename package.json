@@ -27,11 +27,11 @@
     "eslint": "8.49.0",
     "eslint-config-htmlacademy": "9.1.1",
     "json-server": "0.17.3",
+    "pino-pretty": "^11.3.0",
     "rimraf": "5.0.1",
     "ts-node": "10.9.1",
     "tslib": "2.6.2",
-    "typescript": "5.2.2",
-    "pino-pretty": "^11.3.0"
+    "typescript": "5.2.2"
   },
   "type": "module",
   "engines": {
@@ -47,6 +47,7 @@
     "dotenv": "^16.4.5",
     "got": "^13.0.0",
     "inversify": "^6.0.3",
+    "mongoose": "^8.7.3",
     "pino": "^9.5.0",
     "reflect-metadata": "^0.2.2"
   }
