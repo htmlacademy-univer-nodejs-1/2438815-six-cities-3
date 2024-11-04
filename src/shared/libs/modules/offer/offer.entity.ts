@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Offer, User, CityNames, HousingType, Facilities, Coordinates } from '../../../types/index.js';
+import { Offer, CityNames, HousingType, Facilities, Coordinates } from '../../../types/index.js';
 import { defaultClasses, getModelForClass, prop, modelOptions, Ref } from '@typegoose/typegoose';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -129,6 +129,7 @@ export class OfferEntity extends defaultClasses.TimeStamps implements Offer {
     this.photos = offerData.photos;
     this.premium = offerData.premium;
     this.favorites = offerData.favorites;
+    this.rating = offerData.rating;
     this.housingType = offerData.housingType;
     this.roomsCount = offerData.roomsCount;
     this.guestsCount = offerData.guestsCount;
