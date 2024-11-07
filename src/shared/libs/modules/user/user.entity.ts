@@ -17,22 +17,26 @@ export interface UserEntity extends defaultClasses.Base {}
 export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({
     required: true,
+    type: String,
     minlength: [1, 'Min length for name is 1'],
     maxlength: [15, 'Max length for name is 15'],})
   public userName = '';
 
   @prop({
+    type: String,
     match: [/\.+(jpg|png)$/, 'Path must end to "jpg" or "png"'],
   })
   public avatarPath = '';
 
   @prop({
+    type: String,
     unique: true,
     match: [/^([\w-\\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Email is incorrect'],
     required: true,})
   public email = '';
 
   @prop({
+    type: String,
     required: true,
     minlength: [6, 'Min length for pasword is 1'],
     maxlength: [12, 'Max length for password is 15'],
@@ -40,7 +44,6 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   private password = '';
 
   @prop({
-    type: UserType,
     required: true,
   })
   public userType!: UserType;
