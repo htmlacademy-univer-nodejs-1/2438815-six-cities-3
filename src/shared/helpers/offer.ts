@@ -34,11 +34,6 @@ export function createOffer(offerData: string): Offer {
     userType: UserType[userType as 'Standart' | 'Pro'],
   };
 
-  const coordinates = {
-    latitude: Number.parseFloat(latitude),
-    longitude: Number.parseFloat(longitude),
-  };
-
   return {
     name,
     description,
@@ -56,6 +51,7 @@ export function createOffer(offerData: string): Offer {
     facilities: facilities.split(';').map((title) => title as Facilities),
     author,
     commentsCount: Number.parseInt(commentsCount, 10),
-    coordinates,
+    latitude: Number.parseFloat(latitude),
+    longitude: Number.parseFloat(longitude),
   };
 }

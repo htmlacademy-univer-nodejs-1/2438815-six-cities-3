@@ -1,10 +1,10 @@
-import { CityNames, Facilities, Coordinates, HousingType } from '../../../../types/index.js';
+import { Facilities, HousingType } from '../../../../types/index.js';
 
 export class CreateOfferDto {
   public name!: string;
   public description!: string;
   public publicationDate!: Date;
-  public cityName!: CityNames;
+  public cityName!: string;
   public preview!: string;
   public photos!: string[];
   public premium!: boolean;
@@ -15,7 +15,8 @@ export class CreateOfferDto {
   public guestsCount!: number;
   public rentCost!: number;
   public facilities!: Facilities[];
-  public author!: string;
-  public coordinates!: Coordinates;
+  public userId!: string;
+  public latitude!: number;
+  public longitude!: number;
   public commentsCount!: number;
 }

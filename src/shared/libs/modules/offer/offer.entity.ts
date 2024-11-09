@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Offer, CityNames, HousingType, Facilities, Coordinates } from '../../../types/index.js';
+import { Offer, CityNames, HousingType, Facilities } from '../../../types/index.js';
 import { defaultClasses, getModelForClass, prop, modelOptions, Ref } from '@typegoose/typegoose';
 import { UserEntity } from '../user/user.entity.js';
 
@@ -17,17 +17,20 @@ export interface OfferEntity extends defaultClasses.Base {}
 export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({
     required: true,
+    type: String,
     minlength: [10, 'Min length for name is 10'],
     maxlength: [100, 'Max length for name is 100'],})
   public name = '';
 
   @prop({
     required: true,
+    type: String,
     minlength: [20, 'Min length for descripton is 10'],
     maxlength: [1024, 'Max length for description is 1024'],})
   public description = '';
 
   @prop({
+    type: Date,
     required: true,
   })
   public publicationDate = dayjs().toDate();
@@ -40,6 +43,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public cityName = '';
 
   @prop({
+    type: String,
     required: true,
   })
   public preview = '';
@@ -55,16 +59,19 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public photos!: string[];
 
   @prop({
+    type: Boolean,
     required: true,
   })
   public premium = false;
 
   @prop({
+    type: Boolean,
     required: true,
   })
   public favorites = false;
 
   @prop({
+    type: Number,
     required: true,
     min: 1,
     max: 5,
@@ -72,11 +79,14 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public rating!: number;
 
   @prop({
+    type: String,
+    enum: HousingType,
     required: true,
   })
   public housingType!: HousingType;
 
   @prop({
+    type: Number,
     required: true,
     min: 1,
     max: 8,
@@ -84,6 +94,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public roomsCount!: number;
 
   @prop({
+    type: Number,
     required: true,
     min: 1,
     max: 10,
@@ -91,6 +102,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public guestsCount!: number;
 
   @prop({
+    type: Number,
     required: true,
     min: 100,
     max: 100000,
@@ -98,8 +110,9 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public rentCost!: number;
 
   @prop({
+    type: () => String,
+    enum: Facilities,
     required: true,
-    type: [Facilities],
   })
   public facilities!: Facilities[];
 
@@ -107,17 +120,25 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     ref: UserEntity,
     required: true,
   })
-  public author!: Ref<UserEntity>;
+  public userId!: Ref<UserEntity>;
 
   @prop({
+    type: Number,
     required: true,
   })
   public commentsCount = 0;
 
   @prop({
     required: true,
+    type: Number,
   })
-  public coordinates!: Coordinates;
+  public latitude!: number;
+
+  @prop({
+    required: true,
+    type: Number,
+  })
+  public longitude!: number;
 
   constructor(offerData: Offer) {
     super();
@@ -135,7 +156,8 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     this.guestsCount = offerData.guestsCount;
     this.rentCost = offerData.rentCost;
     this.facilities = offerData.facilities;
-    this.coordinates = offerData.coordinates;
+    this.latitude = offerData.latitude;
+    this.longitude = offerData.longitude;
   }
 }
 
