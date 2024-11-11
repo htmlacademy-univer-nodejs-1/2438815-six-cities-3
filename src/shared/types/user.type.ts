@@ -5,5 +5,4 @@ export type User = {
   email: string;
   avatarPath: string;
   userType: UserType;
-  password: string;
 }
