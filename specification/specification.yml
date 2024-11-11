@@ -1,0 +1,207 @@
+openapi: 3.0.0
+info:
+  title: API сервер для демо-проекта «Шесть городов».
+  description: "* Список ресурсов и маршрутов сервера «Шесть городов»."
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  version: 1.0.0
+
+tags:
+  - name: offers
+    description: Действия с предложениями по аренде.
+  - name: users
+    description: Действия с пользователями.
+  - name: comments
+    description: Действия с комментариями.
+  - name: favorites
+    description: Действия с избранными предложениями для пользователя.
+  - name: premium
+    description: Действия с премиальными предложениями для города.
+
+paths:
+  /users/register:
+    post:
+      tags:
+        - users
+      summary: Регистрация пользователя.
+      description: Регистрирует нового пользователя.
+
+      requestBody:
+        description: Информация для создания нового пользователя.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createUser'
+        required: true
+
+      responses:
+        "201":
+          description: Пользователь зарегистрирован. Объект пользователя.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+
+        "409":
+          description: Пользователь с таким email уже существует.
+
+  /users/login:
+    post:
+      tags:
+        - users
+      summary: Авторизация пользователя
+      description: Авторизует пользователя на основе логина и пароля
+
+      requestBody:
+        description: Логин и пароль, введённые пользователем.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/loginData"
+        required: true
+
+      responses:
+        "201":
+          description: Авторизация прошла успешно. Возвращён объект пользователя с токеном внутри.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+
+        "401":
+          description: Неправильный логин или пароль.
+
+        "404":
+          description: Пользователя с такой почтой не существует.
+
+
+    get:
+      tags:
+        - users
+      summary: Проверка состояния пользователя
+      description: Возвращает информацию по авторизованному пользователю - в заголовке передаётся токен авторизации.
+      parameters:
+        - name: X-Token
+          in: header
+          description: token to be passed as a header
+          required: true
+          schema:
+            type: string
+
+      responses:
+        "200":
+          description: Пользователь авторизован, ему возвращаются его данные.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/user"
+
+        "403":
+          description: Нет доступа, пользователь не авторизован.
+
+
+  /users/{userId}/avatar:
+    post:
+      tags:
+        - users
+      summary: Загрузить изображение аватара
+      description: Загружает изображение аватара пользователя. Изображение
+        аватара должно быть в формате `png` или `jpg`.
+
+      responses:
+        "200":
+          description: Аватар пользователя успешно обновлён.
+
+        "400":
+          description: Аватар имеет неверный формат.
+
+  /users/logout:
+    post:
+      tags:
+        - users
+      summary: Выход из закрытой части приложения
+      description: Разлогинивает залогиненного пользователя - в заголовке передаётся токен авторизации.
+      parameters:
+        - name: X-Token
+          in: header
+          description: token to be passed as a header
+          required: true
+          schema:
+            type: string
+
+      responses:
+        "200":
+          description: Пользователь авторизован, его разлогинивает.
+
+        "403":
+          description: Нет доступа, пользователь не авторизован.
+
+
+
+components:
+  schemas:
+    createUser:
+      type: object
+
+      properties:
+        userName:
+          type: string
+          example: exampleUserName
+
+        email:
+          type: string
+          example: example@email.ru
+
+        password:
+          type: string
+          example: 123456
+
+        avatarUrl:
+          type: string
+          example: directory/avatar.png
+
+        userType:
+          type: string
+          example: pro
+
+    user:
+      type: object
+
+      properties:
+        id:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: example@email.ru
+
+        userName:
+          type: string
+          example: exampleUserName
+
+        avatarUrl:
+          type: string
+          example: directory/avatar.png
+
+        userType:
+          type: string
+          example: pro
+
+        x-token:
+          type: string
+          example: "c84f18a2-c6c7-4850-be15-93f9cbaef3b3"
+
+
+    loginData:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: example@email.ru
+
+        password:
+          type: string
+          example: 123456
