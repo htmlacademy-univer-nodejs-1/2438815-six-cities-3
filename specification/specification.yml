@@ -14,10 +14,6 @@ tags:
     description: Действия с пользователями.
   - name: comments
     description: Действия с комментариями.
-  - name: favorites
-    description: Действия с избранными предложениями для пользователя.
-  - name: premium
-    description: Действия с премиальными предложениями для города.
 
 paths:
   /users/register:
@@ -67,7 +63,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/user"
+                $ref: "#/components/schemas/loginUser"
 
         "401":
           description: Неправильный логин или пароль.
@@ -95,11 +91,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/user"
+                $ref: "#/components/schemas/loginUser"
 
         "403":
           description: Нет доступа, пользователь не авторизован.
-
 
   /users/{userId}/avatar:
     post:
@@ -108,7 +103,23 @@ paths:
       summary: Загрузить изображение аватара
       description: Загружает изображение аватара пользователя. Изображение
         аватара должно быть в формате `png` или `jpg`.
+      parameters:
+          - name: userId
+            in: path
+            required: true
+            description: Id пользователя
+            schema:
+              type: string
 
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                avatar:
+                  type: string
+                  format: binary
       responses:
         "200":
           description: Аватар пользователя успешно обновлён.
@@ -137,7 +148,363 @@ paths:
         "403":
           description: Нет доступа, пользователь не авторизован.
 
+  /users/{userId}/favorites/{offerId}:
+    patch:
+      tags:
+        - users
+      summary: Редактирование наличия предложения в избранных у пользователя.
+      description: Возвращает объект предложения с новым статусом, переданным в запросе.
+      parameters:
+          - name: X-Token
+            in: header
+            description: token to be passed as a header
+            required: true
+            schema:
+              type: string
 
+          - name: offerId
+            in: path
+            required: true
+            description: Id оффера
+            schema:
+              type: string
+
+          - name: userId
+            in: path
+            required: true
+            description: Id пользователя
+            schema:
+              type: string
+
+      requestBody:
+        description: Новый статус
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/favoriteOffer'
+        required: true
+
+      responses:
+          '200':
+            description: Предложение с изменённым статусом.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/offer'
+
+          '403':
+            description: Нет доступа, пользователь не авторизован.
+
+          '404':
+            description:  Такого предложения не существует.
+
+  /users/{userId}/favorites:
+    get:
+      tags:
+        - users
+      summary: Список избранных предложений пользователя.
+      description: Возвращает список избранных предложений пользователя.
+      parameters:
+          - name: X-Token
+            in: header
+            description: token to be passed as a header
+            required: true
+            schema:
+              type: string
+
+          - name: offerId
+            in: path
+            required: true
+            description: Id оффера
+            schema:
+              type: string
+
+          - name: userId
+            in: path
+            required: true
+            description: Id пользователя
+            schema:
+              type: string
+
+      requestBody:
+        description: Список избранных предложений
+        content:
+          application/json:
+            schema:
+              type: array
+              $ref: '#/components/schemas/listOffer'
+        required: true
+
+      responses:
+          '200':
+            description: Предложение с изменённым статусом.
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/offer'
+
+          '403':
+            description: Нет доступа, пользователь не авторизован.
+
+  /offers:
+    post:
+      tags:
+        - offers
+      summary: Создание нового предложения.
+      description: Создаёт новое предложение, если пользователь авторизован.
+      parameters:
+          - name: X-Token
+            in: header
+            description: token to be passed as a header
+            required: true
+            schema:
+              type: string
+
+      requestBody:
+        description: Данные для создания нового предложения.
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/createOffer"
+
+      responses:
+        "201":
+          description: Предложение создано. Объект предложения.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/offer"
+
+        "403":
+          description: Нет доступа, пользователь не авторизован.
+
+    get:
+      tags:
+        - offers
+      summary: Получение списка предложений.
+      description: Получает предложения.
+      parameters:
+          - name: X-Token
+            in: header
+            description: token to be passed as a header
+            required: true
+            schema:
+              type: string
+          - in: query
+            name: count
+            schema:
+              type: number
+            required: false
+            description: Количество предложений, которое нужно вывести в списке
+
+      responses:
+        "201":
+          description: Список предложений
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: "#/components/schemas/listOffer"
+
+        "403":
+          description: Нет доступа, пользователь не авторизован.
+
+  /offers/{offerId}:
+    get:
+      tags:
+        - offers
+      summary: Получение детальной информации о конкретном предложении.
+      description: Получает предложение по его id.
+      parameters:
+          - name: offerId
+            in: path
+            required: true
+            description: Id предложения
+            schema:
+              type: string
+
+      responses:
+        "200":
+          description: Предложение получено.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/offer"
+
+        "404":
+          description: Такого предложения не существует.
+
+    patch:
+      tags:
+        - offers
+      summary: Редактирование предложения.
+      description: Редактирует предложение по его id, если пользователь авторизован.
+      parameters:
+        - name: X-Token
+          in: header
+          description: token to be passed as a header
+          required: true
+          schema:
+            type: string
+
+        - name: offerId
+          in: path
+          required: true
+          description: Id предложения
+          schema:
+              type: string
+
+      requestBody:
+        description: Информация для редактирования предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createOffer'
+        required: true
+
+      responses:
+        "200":
+          description: Предложение отредактировано.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/offer"
+
+        "403":
+          description: Нет доступа, пользователь не авторизован.
+
+        "404":
+          description: Такого предложения не существует.
+
+    delete:
+      tags:
+        - offers
+      summary: Удаление конкретного предложения.
+      description: Удаляет предложение по его id.
+      parameters:
+        - name: X-Token
+          in: header
+          description: token to be passed as a header
+          required: true
+          schema:
+            type: string
+
+        - in: query
+          name: userId
+          schema:
+              type: string
+          required: true
+          description: Id пользователя, который пытается удалить предложение.
+
+        - name: offerId
+          in: path
+          required: true
+          description: Id предложения
+          schema:
+              type: string
+
+      requestBody:
+        description: Информация для редактирования предложения.
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/user'
+        required: true
+
+      responses:
+        "200":
+          description: Пользователь авторизован, преложение удалено.
+
+        "403":
+          description: Нет доступа, пользователь не авторизован.
+
+  /offers/{offerId}/comments:
+    get:
+      tags:
+        - offers
+      summary: Список комментариев
+      description: Возвращает список комментариев для конкретного предложения.
+      parameters:
+        - in: path
+          name: offerId
+          schema:
+            type: string
+          required: true
+          description: Id предложения
+
+      responses:
+        '200':
+          description: List of comments.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+
+        '404':
+          description: Такого предложения не существует.
+
+  /offers/premium/{cityName}:
+    get:
+      tags:
+        - offers
+      summary: Список премиальных предложений по городам
+      description: Возвращает 3 или менее премиальных предложений для конкретного города.
+      parameters:
+        - in: path
+          name: cityName
+          schema:
+            type: string
+          required: true
+          description: Название города.
+
+      responses:
+        '200':
+          description: Список премиальных предложений для этого города.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/listOffer'
+        '404':
+          description: Такого города не существует.
+
+  /comments:
+    post:
+      tags:
+        - comments
+      summary: Новый комментарий
+      description: Создаёт новый комментарий.
+      parameters:
+          - name: X-Token
+            in: header
+            description: token to be passed as a header
+            required: true
+            schema:
+              type: string
+
+      requestBody:
+        description: Данные для создания комментария
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createComment'
+        required: true
+
+      responses:
+        '200':
+          description: Созданный комментарий.
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  $ref: '#/components/schemas/comment'
+
+        '403':
+          description: Пользователь не авторизован.
 
 components:
   schemas:
@@ -169,6 +536,42 @@ components:
       type: object
 
       properties:
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        email:
+          type: string
+          example: example@email.ru
+
+        userName:
+          type: string
+          example: exampleUserName
+
+        avatarUrl:
+          type: string
+          example: directory/avatar.png
+
+        userType:
+          type: string
+          example: pro
+
+    loginData:
+      type: object
+
+      properties:
+        email:
+          type: string
+          example: example@email.ru
+
+        password:
+          type: string
+          example: 123456
+
+    loginUser:
+      type: object
+
+      properties:
         id:
           type: string
           example: 6329c3d6a04ab1061c6425ea
@@ -191,17 +594,259 @@ components:
 
         x-token:
           type: string
-          example: "c84f18a2-c6c7-4850-be15-93f9cbaef3b3"
+          example: c84f18a2-c6c7-4850-be15-93f9cbaef3b3
 
-
-    loginData:
+    createOffer:
       type: object
 
       properties:
-        email:
+        name:
           type: string
-          example: example@email.ru
+          example: exampleOfferName
 
-        password:
+        description:
           type: string
-          example: 123456
+          example: Not very long example description of the example offer.
+
+        cityName:
+          type: string
+          example: Amsterdam
+
+        preview:
+          type: string
+          example: path/preview.png
+
+        photos:
+          type: array
+          example:
+            [path/photo1.png,
+              path/photo2.png,
+              path/photo3.png,
+              path/photo4.png,
+              path/photo5.png,
+              path/photo6.png]
+
+        premium:
+          type: boolean
+          example: false
+
+        housingType:
+          type: string
+          example: apartment
+
+        roomsCount:
+          type: number
+          example: 2
+
+        guestsCount:
+          type: number
+          example: 2
+
+        rentCost:
+          type: number
+          example: 10000
+
+        facilities:
+          type: array
+          example:
+            [Breakfast,
+              Air conditioning,
+              Laptop friendly]
+
+        latitude:
+          type: number
+          example: 52.370216
+
+        longitude:
+          type: number
+          example: 4.895168
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+    offer:
+      type: object
+
+      properties:
+        offerId:
+          type: string
+          example: 5t29c3d6a04ab1061c6425ea
+
+        name:
+          type: string
+          example: exampleOfferName
+
+        description:
+          type: string
+          example: Not very long example description of the example offer.
+
+        publicationDate:
+          type: string
+          example: 2024-09-26T08:45:40.283Z
+
+        cityName:
+          type: string
+          example: Amsterdam
+
+        preview:
+          type: string
+          example: path/preview.png
+
+        photos:
+          type: array
+          example:
+            [path/photo1.png,
+              path/photo2.png,
+              path/photo3.png,
+              path/photo4.png,
+              path/photo5.png,
+              path/photo6.png]
+
+        premium:
+          type: boolean
+          example: false
+
+        favorites:
+          type: boolean
+          example: false
+
+        rating:
+          type: number
+          example: 4.3
+
+        housingType:
+          type: string
+          example: apartment
+
+        roomsCount:
+          type: number
+          example: 2
+
+        guestsCount:
+          type: number
+          example: 2
+
+        rentCost:
+          type: number
+          example: 10000
+
+        facilities:
+          type: array
+          example:
+            [Breakfast,
+              Air conditioning,
+              Laptop friendly]
+
+        latitude:
+          type: number
+          example: 52.370216
+
+        longitude:
+          type: number
+          example: 4.895168
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        commentsCount:
+          type: number
+          example: 10
+
+    listOffer:
+      type: object
+
+      properties:
+        offerId:
+          type: string
+          example: 5t29c3d6a04ab1061c6425ea
+
+        name:
+          type: string
+          example: exampleOfferName
+
+        publicationDate:
+          type: string
+          example: 2024-09-26T08:45:40.283Z
+
+        cityName:
+          type: string
+          example: Amsterdam
+
+        preview:
+          type: string
+          example: path/preview.png
+
+        premium:
+          type: boolean
+          example: false
+
+        favorites:
+          type: boolean
+          example: false
+
+        rating:
+          type: number
+          example: 4.3
+
+        housingType:
+          type: string
+          example: apartment
+
+        rentCost:
+          type: number
+          example: 10000
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        commentsCount:
+          type: number
+          example: 10
+
+    favoriteOffer:
+      type: object
+      properties:
+        favorites:
+          type: boolean
+          example: true
+
+    createComment:
+      type: object
+      properties:
+        text:
+          type: string
+          example: Текст комментария
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        offerId:
+          type: string
+          example: 5t29c3d6a04ab1061c6425ea
+
+    comment:
+      type: object
+      properties:
+        text:
+          type: string
+          example: Текст комментария
+
+        userId:
+          type: string
+          example: 6329c3d6a04ab1061c6425ea
+
+        offerId:
+          type: string
+          example: 5t29c3d6a04ab1061c6425ea
+
+        rating:
+          type: number
+          example: 3
+
+        publicationDate:
+          type: string
+          example: 2024-09-26T08:45:40.283Z
