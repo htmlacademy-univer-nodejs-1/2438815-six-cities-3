@@ -96,37 +96,6 @@ paths:
         "403":
           description: Нет доступа, пользователь не авторизован.
 
-  /users/{userId}/avatar:
-    post:
-      tags:
-        - users
-      summary: Загрузить изображение аватара
-      description: Загружает изображение аватара пользователя. Изображение
-        аватара должно быть в формате `png` или `jpg`.
-      parameters:
-          - name: userId
-            in: path
-            required: true
-            description: Id пользователя
-            schema:
-              type: string
-
-      requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                avatar:
-                  type: string
-                  format: binary
-      responses:
-        "200":
-          description: Аватар пользователя успешно обновлён.
-
-        "400":
-          description: Аватар имеет неверный формат.
-
   /users/logout:
     post:
       tags:
@@ -148,10 +117,10 @@ paths:
         "403":
           description: Нет доступа, пользователь не авторизован.
 
-  /users/{userId}/favorites/{offerId}:
+  /offers/{userId}/favorites/{offerId}:
     patch:
       tags:
-        - users
+        - offers
       summary: Редактирование наличия предложения в избранных у пользователя.
       description: Возвращает объект предложения с новым статусом, переданным в запросе.
       parameters:
@@ -198,10 +167,10 @@ paths:
           '404':
             description:  Такого предложения не существует.
 
-  /users/{userId}/favorites:
+  /offers/{userId}/favorites:
     get:
       tags:
-        - users
+        - offers
       summary: Список избранных предложений пользователя.
       description: Возвращает список избранных предложений пользователя.
       parameters:
