@@ -6,6 +6,7 @@ import { Logger } from '../shared/libs/logger/index.js';
 import { Component } from '../shared/types/index.js';
 import { DatabaseClient } from '../shared/libs/database-client/index.js';
 import { getMongoURI } from '../shared/helpers/database.js';
+import { Controller } from '../shared/libs/rest/index.js';
 
 @injectable()
 export class Application {
@@ -16,6 +17,9 @@ export class Application {
     @inject(Component.DatabaseClient) private readonly db: DatabaseClient,
   ) {
     this.server = express();
+  }
+
+  private async _initControllers() {
   }
 
   private async _initDb() {
@@ -40,6 +44,10 @@ export class Application {
     this.logger.info('Init database');
     await this._initDb();
     this.logger.info('Init database completed');
+
+    this.logger.info('Init controllers');
+    await this._initControllers();
+    this.logger.info('Controllers initialized');
 
     this.logger.info('Try to init server…');
     await this._initServer();
