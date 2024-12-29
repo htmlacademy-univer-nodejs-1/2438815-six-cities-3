@@ -1,21 +1,21 @@
 import { inject, injectable } from 'inversify';
 import { OfferService } from './offer-service.interface.js';
-import { CityNames, Component } from '../../../types/index.js';
+import { Component } from '../../../types/index.js';
 import { Logger } from '../../logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
-import { CreateOfferDto } from './dto/create-offer.dto.js';
-import { UpdateOfferDto } from './dto/update-offer.dto.js';
+import { FullOfferDto } from './dto/full-offer.dto.js';
 import { DEFAULT_CITY_OFFER_COUNT, DEFAULT_OFFER_COUNT } from './consts.js';
+
 
 @injectable()
 export class DefaultOfferService implements OfferService {
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
-    @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>
+    @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
   ) {}
 
-  public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
+  public async create(dto: FullOfferDto): Promise<DocumentType<OfferEntity>> {
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.name}`);
 
@@ -30,12 +30,14 @@ export class DefaultOfferService implements OfferService {
     const limit = count ?? DEFAULT_OFFER_COUNT;
     if (userId) {
       return this.offerModel
-        .find({userId: userId}, {limit})
+        .find({userId: userId})
+        .limit(limit)
         .populate(['userId'])
         .exec();
     }
     return this.offerModel
-      .find({limit})
+      .find()
+      .limit(limit)
       .populate(['userId'])
       .exec();
   }
@@ -46,7 +48,7 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
+  public async updateById(offerId: string, dto: FullOfferDto): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, {new: true})
       .populate(['userId'])
@@ -70,12 +72,7 @@ export class DefaultOfferService implements OfferService {
     return offers.filter((offer) => offer.favorites);
   }
 
-  public async updateFavorites(userId: string, offerId: string,) {
-    const favorites = await this.findFavorites(userId);
-    return favorites.find((offer) => offer.id === offerId);
-  }
-
-  public async findPremiumByCity(city: CityNames) {
+  public async findPremiumByCity(city: string) {
     const offers = await this.find(DEFAULT_CITY_OFFER_COUNT);
     return offers
       .filter((offer) => (offer.cityName === city && offer.premium));

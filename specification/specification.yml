@@ -117,7 +117,7 @@ paths:
         "403":
           description: Нет доступа, пользователь не авторизован.
 
-  /offers/{userId}/favorites/{offerId}:
+  /offers/{userId}/{offerId}/updateFavorites:
     patch:
       tags:
         - offers
