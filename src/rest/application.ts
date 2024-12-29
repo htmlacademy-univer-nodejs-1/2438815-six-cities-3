@@ -6,7 +6,7 @@ import { Logger } from '../shared/libs/logger/index.js';
 import { Component } from '../shared/types/index.js';
 import { DatabaseClient } from '../shared/libs/database-client/index.js';
 import { getMongoURI } from '../shared/helpers/database.js';
-import { Controller } from '../shared/libs/rest/index.js';
+import { Controller, ExceptionFilter } from './index.js';
 
 @injectable()
 export class Application {
@@ -15,11 +15,22 @@ export class Application {
     @inject(Component.Logger) private readonly logger: Logger,
     @inject(Component.Config) private readonly config: Config<RestSchema>,
     @inject(Component.DatabaseClient) private readonly db: DatabaseClient,
+    @inject(Component.ExceptionFilter) private readonly appExceptionFilter: ExceptionFilter,
+    @inject(Component.UserController) private readonly userController: Controller,
   ) {
     this.server = express();
   }
 
   private async _initControllers() {
+    this.server.use('/users', this.userController.router);
+  }
+
+  private async _initMiddleware() {
+    this.server.use(express.json());
+  }
+
+  private async _initExceptionFilters() {
+    this.server.use(this.appExceptionFilter.catch.bind(this.appExceptionFilter));
   }
 
   private async _initDb() {
@@ -45,11 +56,19 @@ export class Application {
     await this._initDb();
     this.logger.info('Init database completed');
 
+    this.logger.info('Init middleware');
+    await this._initMiddleware();
+    this.logger.info('Middleware initialized');
+
     this.logger.info('Init controllers');
     await this._initControllers();
     this.logger.info('Controllers initialized');
 
-    this.logger.info('Try to init server…');
+    this.logger.info('Init exception filter');
+    await this._initExceptionFilters();
+    this.logger.info('Exception filter initialized');
+
+    this.logger.info('Try to init server');
     await this._initServer();
     this.logger.info(`Server inited on http://localhost:${this.config.get('PORT')}`);
   }
