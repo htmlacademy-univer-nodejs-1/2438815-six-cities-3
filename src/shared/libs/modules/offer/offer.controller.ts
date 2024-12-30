@@ -1,4 +1,4 @@
-import { BaseController, HttpError, HttpMethod } from '../../../../rest/index.js';
+import { BaseController, HttpError, HttpMethod, ValidateObjectIdMiddleware } from '../../../../rest/index.js';
 import { inject, injectable } from 'inversify';
 import { Logger } from '../../logger/logger.interface.js';
 import { Component } from '../../../types/component.enum.js';
@@ -24,14 +24,34 @@ export default class OfferController extends BaseController {
     super(logger);
 
     this.logger.info('Register routes for OfferController');
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Get, handler: this.findOne });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Get,
+      handler: this.findOne,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]
+    });
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.findAll });
     this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Delete, handler: this.delete });
-    this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.delete,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]
+    });
+    this.addRoute({
+      path: '/:offerId',
+      method: HttpMethod.Patch,
+      handler: this.update,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]
+    });
     this.addRoute({ path: '/premium/:cityName', method: HttpMethod.Get, handler: this.findPremiumToCity });
     this.addRoute({ path: '/:userId/favorites', method: HttpMethod.Get, handler: this.findFavorites });
-    this.addRoute({ path: '/:offerId/comments', method: HttpMethod.Get, handler: this.findComments });
+    this.addRoute({
+      path: '/:offerId/comments',
+      method: HttpMethod.Get,
+      handler: this.findComments,
+      middlewares: [new ValidateObjectIdMiddleware('offerId')]
+    });
   }
 
   public async findOne({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
