@@ -45,7 +45,12 @@ export default class OfferController extends BaseController {
       middlewares: [new ValidateObjectIdMiddleware('offerId')]
     });
     this.addRoute({ path: '/premium/:cityName', method: HttpMethod.Get, handler: this.findPremiumToCity });
-    this.addRoute({ path: '/:userId/favorites', method: HttpMethod.Get, handler: this.findFavorites });
+    this.addRoute({
+      path: '/:userId',
+      method: HttpMethod.Get,
+      handler: this.findFavorites,
+      middlewares: [new ValidateObjectIdMiddleware('userId')]
+    });
     this.addRoute({
       path: '/:offerId/comments',
       method: HttpMethod.Get,

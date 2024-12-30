@@ -5,8 +5,8 @@ POST http://localhost:5000/comments HTTP/1.1
 Content-Type: application/json
 
 {
-  "text": "Сколько вампиров приходится на квадратный метр?",
-  "offerId": "6771c977673b8de2fd286e80",
+  "text": "Сколько охотников приходится на квадратный метр????",
+  "offerId": "67727c48cd5746126de7ebc5",
   "userId": "677163f98eb15814f339e60c",
   "rating": 5
 }
