@@ -1,4 +1,4 @@
-import { IsEmail, IsEnum, IsString, Length, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsEnum, IsOptional, IsString, Length, MaxLength, MinLength } from 'class-validator';
 import { UserType } from '../../../../types/index.js';
 import { CreateUserValidationMessage } from './create-user-validation.messages.js';
 
@@ -19,4 +19,7 @@ export class CreateUserDto {
   @IsString({ message: CreateUserValidationMessage.password.invalidFormat })
   @Length(6, 12, { message: CreateUserValidationMessage.password.lengthField })
   public password!: string;
+
+  @IsOptional()
+  public avatar!: string;
 }
