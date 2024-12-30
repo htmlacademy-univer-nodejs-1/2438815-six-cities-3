@@ -11,3 +11,4 @@ export * from './middleware/middleware.interface.js';
 export * from './middleware/objectId-validate.middleware.js';
 export * from './middleware/validate-dto.middleware.js';
 export * from './middleware/document-exists.middleware.js';
+export * from './middleware/upload-file.middleware.js';
