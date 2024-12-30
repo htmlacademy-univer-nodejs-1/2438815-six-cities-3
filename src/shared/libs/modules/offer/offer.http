@@ -1,5 +1,5 @@
 # Получить предложение по id
-GET http://localhost:5000/offers/672f2581a954c44bc8fb748c HTTP/1.1
+GET http://localhost:5000/offers/672f2581a954c44bc8fb748a HTTP/1.1
 
 ###
 
@@ -51,7 +51,7 @@ Content-Type: application/json
 
 {
   "favorites": true,
-  "name": "Замок Ван Хельсинга-3"
+  "name": "Замок Ван Хельсинга-4"
 }
 
 ###

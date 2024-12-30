@@ -4,8 +4,9 @@ import { Component } from '../../../types/index.js';
 import { Logger } from '../../logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
-import { FullOfferDto } from './dto/full-offer.dto.js';
+import { CreateOfferDto } from './dto/create-offer.dto.js';
 import { DEFAULT_CITY_OFFER_COUNT, DEFAULT_OFFER_COUNT } from './consts.js';
+import { UpdateOfferDto } from './dto/update-offer.dto.js';
 
 
 @injectable()
@@ -15,7 +16,7 @@ export class DefaultOfferService implements OfferService {
     @inject(Component.OfferModel) private readonly offerModel: types.ModelType<OfferEntity>,
   ) {}
 
-  public async create(dto: FullOfferDto): Promise<DocumentType<OfferEntity>> {
+  public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
     const result = await this.offerModel.create(dto);
     this.logger.info(`New offer created: ${dto.name}`);
 
@@ -48,7 +49,7 @@ export class DefaultOfferService implements OfferService {
       .exec();
   }
 
-  public async updateById(offerId: string, dto: FullOfferDto): Promise<DocumentType<OfferEntity> | null> {
+  public async updateById(offerId: string, dto: UpdateOfferDto): Promise<DocumentType<OfferEntity> | null> {
     return this.offerModel
       .findByIdAndUpdate(offerId, dto, {new: true})
       .populate(['userId'])
@@ -56,8 +57,8 @@ export class DefaultOfferService implements OfferService {
   }
 
   public async exists(documentId: string): Promise<boolean> {
-    return (await this.offerModel
-      .exists({_id: documentId})) !== null;
+    this.logger.info('EEEEEEEEEEEExists started');
+    return (await this.offerModel.exists({_id: documentId}) !== null);
   }
 
   public async incCommentCount(offerId: string): Promise<DocumentType<OfferEntity> | null> {
