@@ -10,3 +10,9 @@ Content-Type: application/json
   "userId": "677163f98eb15814f339e60c",
   "rating": 5
 }
+
+###
+
+##
+GET http://localhost:5000/upload/triangle7.jpg HTTP/1.1
+###

@@ -9,4 +9,5 @@ export interface UserService {
   findOrCreate(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>>;
   findById(userId: string): Promise<DocumentType<UserEntity> | null>;
   updateById(userId: string, dto: UpdateUserDto): Promise<DocumentType<UserEntity> | null>;
+  exists(documentId: string): Promise<boolean>;
 }

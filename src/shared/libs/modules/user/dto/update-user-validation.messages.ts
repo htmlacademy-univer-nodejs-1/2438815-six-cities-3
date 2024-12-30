@@ -1,6 +1,5 @@
 export const CreateUserValidationMessage = {
   userName: {
-    invalidFormat: 'Username is required',
     minLength: 'Minimum name length must be 1',
     maxLength: 'Maximum name length must be 15',
   },
@@ -8,7 +7,6 @@ export const CreateUserValidationMessage = {
     invalidFormat: 'email must be a valid address'
   },
   userType: {
-    invalidFormat: 'userType is required',
     invalid: 'userType must be from names of elements from userTypes enum',
   },
   password: {

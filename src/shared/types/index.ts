@@ -9,3 +9,4 @@ export * from './mock-server-data.type.js';
 export * from './component.enum.js';
 export * from './user.type.js';
 export * from './city-names.enum.js';
+export * from './document-exists.interface.js';
