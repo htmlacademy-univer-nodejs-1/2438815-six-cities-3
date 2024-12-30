@@ -11,12 +11,15 @@ import { OfferRdo } from './rdo/offer.rdo.js';
 import { ListItemOfferRdo } from './rdo/list-item-offer.rdo.js';
 import { CreateOfferRequest } from './request-types/create-offer-request.type.js';
 import { FullOfferDto } from './dto/full-offer.dto.js';
+import { CommentRdo } from '../comment/rdo/comment.rdo.js';
+import { CommentService } from '../comment/index.js';
 
 @injectable()
 export default class OfferController extends BaseController {
   constructor(
-    @inject(Component.Logger) logger: Logger,
+    @inject(Component.Logger) protected logger: Logger,
     @inject(Component.OfferService) private readonly offerService: OfferService,
+    @inject(Component.CommentService) private readonly commentService: CommentService
   ) {
     super(logger);
 
@@ -28,6 +31,7 @@ export default class OfferController extends BaseController {
     this.addRoute({ path: '/:offerId', method: HttpMethod.Patch, handler: this.update });
     this.addRoute({ path: '/premium/:cityName', method: HttpMethod.Get, handler: this.findPremiumToCity });
     this.addRoute({ path: '/:userId/favorites', method: HttpMethod.Get, handler: this.findFavorites });
+    this.addRoute({ path: '/:offerId/comments', method: HttpMethod.Get, handler: this.findComments });
   }
 
   public async findOne({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
@@ -93,5 +97,10 @@ export default class OfferController extends BaseController {
   public async findFavorites({ params }: Request<ParamUserId>, res: Response) {
     const offers = await this.offerService.findFavorites(params.userId);
     this.ok(res, fillDTO(ListItemOfferRdo, offers));
+  }
+
+  public async findComments({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+    const comments = await this.commentService.findByOfferId(params.offerId);
+    this.ok(res, fillDTO(CommentRdo, comments));
   }
 }
