@@ -37,11 +37,11 @@ Content-Type: image/png
 < C:\Users\User\OneDrive\Рабочий стол\2438815-six-cities-3\upload\screen.png
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
-###
-
-##
-POST http://localhost:5000/users/677163f98eb15814f339e60c/favorites/677288947f09c0430698656b HTTP/1.1
 
 ###
 
-DELETE  http://localhost:5000/users/677163f98eb15814f339e60c/favorites/677288947f09c0430698656b HTTP/1.1
+## Проверить токен пользователя
+GET http://localhost:5000/users/login HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJ1c2VyTmFtZSI6IkNhcHRhaW4gSmFjayIsImlkIjoiNjc3MTYzYjg4ZWIxNTgxNGYzMzllNjA5IiwiaWF0IjoxNzM1NTk2MDY1LCJleHAiOjE3MzU3Njg4NjV9.o1FIsPTyjTehTq22J4CCgDQ8_C-dOAUqHHEdQOaG4uk
+
+###

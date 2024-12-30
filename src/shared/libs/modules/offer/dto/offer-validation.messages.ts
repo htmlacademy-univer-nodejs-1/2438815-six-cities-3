@@ -51,7 +51,7 @@ export const OfferValidationMessage = {
     maxValue: 'Maximum price is 200000',
   },
   facilities: {
-    invalid: 'housingType must be from Facilities array',
+    invalid: 'facilities must be from Facilities array',
   },
   userId: {
     invalidFormat: 'userId field must be a valid id',

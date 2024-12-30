@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, IsLatitude, IsLongitude, IsMongoId, IsNumber, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, IsLatitude, IsLongitude, IsNumber, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { CityNames, Facilities, HousingType } from '../../../../types/index.js';
 import { OfferValidationMessage } from './offer-validation.messages.js';
 
@@ -52,10 +52,9 @@ export class CreateOfferDto {
   @Max(100000, {message: OfferValidationMessage.rentCost.maxValue})
   public rentCost!: number;
 
-  @IsEnum(Facilities, {message: OfferValidationMessage.facilities.invalid})
+  @IsEnum(Facilities, {each: true, message: OfferValidationMessage.facilities.invalid})
   public facilities!: Facilities[];
 
-  @IsMongoId({ message: OfferValidationMessage.userId.invalidFormat })
   public userId!: string;
 
   @IsLatitude({ message: OfferValidationMessage.latitude.invalidFormat })

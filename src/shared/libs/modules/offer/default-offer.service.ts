@@ -81,6 +81,6 @@ export class DefaultOfferService implements OfferService {
 
   public async checkDocumentAuthor(offerId: string, userId: string) {
     const offer = await this.offerModel.findById(offerId);
-    return offer!.userId.toString() === userId;
+    return offer?.userId.toString() === userId;
   }
 }
