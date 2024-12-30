@@ -52,4 +52,20 @@ export class DefaultUserService implements UserService {
     this.logger.info('EEEEEEEEEEEExists started');
     return (await this.model.exists({_id: documentId}) !== null);
   }
+
+
+  public async addFavorite(offerId: string, userId: string): Promise<void> {
+    await this.model.updateOne(
+      {_id: userId},
+      { $addToSet: { favorites: offerId } }
+    );
+  }
+
+  public async deleteFavorite(offerId: string, userId: string): Promise<void> {
+    await this.model.updateOne(
+      {_id: userId},
+      { $pull: { favorites: offerId } }
+    );
+  }
+
 }

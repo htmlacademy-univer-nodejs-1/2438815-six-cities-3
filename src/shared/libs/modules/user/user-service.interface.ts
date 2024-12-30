@@ -10,4 +10,6 @@ export interface UserService {
   findById(userId: string): Promise<DocumentType<UserEntity> | null>;
   updateById(userId: string, dto: UpdateUserDto): Promise<DocumentType<UserEntity> | null>;
   exists(documentId: string): Promise<boolean>;
+  addFavorite(offerId: string, userId: string): Promise<void>;
+  deleteFavorite(offerId: string, userId: string): Promise<void>;
 }
