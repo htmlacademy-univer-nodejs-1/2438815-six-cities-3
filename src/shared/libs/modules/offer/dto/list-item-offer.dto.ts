@@ -8,7 +8,6 @@ export class ListItemOfferDto {
 
   @MinLength(10, {message: OfferValidationMessage.name.minLength})
   @MaxLength(100, {message: OfferValidationMessage.name.maxLength})
-
   public name!: string;
 
   @IsDateString({}, {message: OfferValidationMessage.publicationDate.invalidFormat})

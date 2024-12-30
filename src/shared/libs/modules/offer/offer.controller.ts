@@ -1,4 +1,4 @@
-import { BaseController, HttpError, HttpMethod, ValidateObjectIdMiddleware } from '../../../../rest/index.js';
+import { BaseController, HttpError, HttpMethod, ValidateDtoMiddleware, ValidateObjectIdMiddleware } from '../../../../rest/index.js';
 import { inject, injectable } from 'inversify';
 import { Logger } from '../../logger/logger.interface.js';
 import { Component } from '../../../types/component.enum.js';
@@ -30,21 +30,32 @@ export default class OfferController extends BaseController {
       handler: this.findOne,
       middlewares: [new ValidateObjectIdMiddleware('offerId')]
     });
+
     this.addRoute({ path: '/', method: HttpMethod.Get, handler: this.findAll });
-    this.addRoute({ path: '/', method: HttpMethod.Post, handler: this.create });
+
+    this.addRoute({
+      path: '/',
+      method: HttpMethod.Post,
+      handler: this.create,
+      middlewares: [new ValidateDtoMiddleware(FullOfferDto)]
+    });
+
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
       middlewares: [new ValidateObjectIdMiddleware('offerId')]
     });
+
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
       handler: this.update,
-      middlewares: [new ValidateObjectIdMiddleware('offerId')]
+      middlewares: [new ValidateObjectIdMiddleware('offerId'), new ValidateDtoMiddleware(FullOfferDto)]
     });
+
     this.addRoute({ path: '/premium/:cityName', method: HttpMethod.Get, handler: this.findPremiumToCity });
+
     this.addRoute({
       path: '/:userId',
       method: HttpMethod.Get,

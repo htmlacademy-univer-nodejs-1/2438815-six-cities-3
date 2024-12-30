@@ -1,7 +1,7 @@
 export const OfferValidationMessage = {
   name: {
-    minLength: 'Minimum title length must be 10',
-    maxLength: 'Maximum title length must be 100',
+    minLength: 'Minimum name length must be 10',
+    maxLength: 'Maximum name length must be 100',
   },
   description: {
     minLength: 'Minimum description length must be 20',
