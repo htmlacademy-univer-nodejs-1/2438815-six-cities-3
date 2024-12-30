@@ -47,4 +47,9 @@ export class DefaultUserService implements UserService {
       .findByIdAndUpdate(userId, dto, {new: true})
       .exec() as Promise<DocumentType<UserEntity>>;
   }
+
+  public async exists(documentId: string): Promise<boolean> {
+    this.logger.info('EEEEEEEEEEEExists started');
+    return (await this.model.exists({_id: documentId}) !== null);
+  }
 }

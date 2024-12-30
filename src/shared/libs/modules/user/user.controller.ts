@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
-import { Response } from 'express';
-import { BaseController, HttpError, HttpMethod, ValidateDtoMiddleware } from '../../../../rest/index.js';
+import { Request, Response } from 'express';
+import { BaseController, DocumentExistsMiddleware, HttpError, HttpMethod, UploadFileMiddleware, ValidateDtoMiddleware, ValidateObjectIdMiddleware } from '../../../../rest/index.js';
 import { Logger } from '../../logger/logger.interface.js';
 import { Component } from '../../../types/component.enum.js';
 import { CreateUserRequest } from './request-types/create-user-request.type.js';
@@ -36,6 +36,17 @@ export class UserController extends BaseController {
       method: HttpMethod.Post,
       handler: this.login,
       middlewares: [new ValidateDtoMiddleware(LoginUserDto)]
+    });
+
+    this.addRoute({
+      path: '/:userId/avatar',
+      method: HttpMethod.Post,
+      handler: this.uploadAvatar,
+      middlewares: [
+        new ValidateObjectIdMiddleware('userId'),
+        new DocumentExistsMiddleware(this.userService, 'User', 'userId'),
+        new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'),
+      ]
     });
   }
 
@@ -78,4 +89,9 @@ export class UserController extends BaseController {
     );
   }
 
+  public async uploadAvatar(req: Request, res: Response) {
+    this.created(res, {
+      filepath: req.file?.path
+    });
+  }
 }

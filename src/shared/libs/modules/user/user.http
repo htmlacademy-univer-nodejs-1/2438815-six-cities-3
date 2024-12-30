@@ -22,3 +22,19 @@ Content-Type: application/json
   "email": "torans@overlook.net",
   "password": "shining"
 }
+
+###
+
+## Отправить изображение
+
+POST http://localhost:5000/users/672f2581a954c44bc8fb748a/avatar HTTP/1.1
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="avatar"; filename="screen.png"
+Content-Type: image/png
+
+< C:\Users\User\OneDrive\Рабочий стол\2438815-six-cities-3\upload\screen.png
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+##
