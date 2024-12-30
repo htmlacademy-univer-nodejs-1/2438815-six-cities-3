@@ -7,7 +7,7 @@ import { Logger } from '../../logger/logger.interface.js';
 import { LoginUserDto, UserEntity, UserService } from '../user/index.js';
 import { TokenPayload } from '../../../types/token-payload.js';
 import { Config, RestSchema } from '../../config/index.js';
-import { UserNotFoundException } from './errors/user-not-found.exception.js';
+import { UserNotFoundException, UserPasswordIncorrectException } from './errors/index.js';
 import {JWT_ALGORITHM, JWT_EXPIRED} from './consts.js';
 
 @injectable()
