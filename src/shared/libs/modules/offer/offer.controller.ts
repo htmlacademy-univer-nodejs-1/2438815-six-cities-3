@@ -1,4 +1,4 @@
-import { BaseController, HttpMethod, ValidateDtoMiddleware, ValidateObjectIdMiddleware, DocumentExistsMiddleware } from '../../../../rest/index.js';
+import { BaseController, HttpMethod, ValidateDtoMiddleware, ValidateObjectIdMiddleware, DocumentExistsMiddleware, CheckAuthorIdMiddleware, PrivateRouteMiddleware } from '../../../../rest/index.js';
 import { inject, injectable } from 'inversify';
 import { Logger } from '../../logger/logger.interface.js';
 import { Component } from '../../../types/component.enum.js';
@@ -44,14 +44,23 @@ export default class OfferController extends BaseController {
       path: '/:offerId',
       method: HttpMethod.Delete,
       handler: this.delete,
-      middlewares: [new ValidateObjectIdMiddleware('offerId'), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new CheckAuthorIdMiddleware(this.offerService, 'Offer', 'offerId'),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId')]
     });
 
     this.addRoute({
       path: '/:offerId',
       method: HttpMethod.Patch,
       handler: this.update,
-      middlewares: [new ValidateObjectIdMiddleware('offerId'), new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'), new ValidateDtoMiddleware(UpdateOfferDto)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new CheckAuthorIdMiddleware(this.offerService, 'Offer', 'offerId'),
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'), new ValidateDtoMiddleware(UpdateOfferDto)
+      ]
     });
 
     this.addRoute({ path: '/premium/:cityName', method: HttpMethod.Get, handler: this.findPremiumToCity });

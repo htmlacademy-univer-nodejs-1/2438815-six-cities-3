@@ -14,8 +14,6 @@ import { LoginUserDto } from './dto/login-user.dto.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { AuthService } from '../auth/index.js';
 import { LoggedUserRdo } from './rdo/logged-user.rdo.js';
-import { ParamUserAndOfferId } from '../offer/inner-params-types/params.js';
-import { OfferService } from '../offer/index.js';
 
 @injectable()
 export class UserController extends BaseController {
@@ -24,7 +22,6 @@ export class UserController extends BaseController {
     @inject(Component.UserService) private readonly userService: UserService,
     @inject(Component.Config) private readonly configService: Config<RestSchema>,
     @inject(Component.AuthService) private readonly authService: AuthService,
-    @inject(Component.OfferService) private readonly offerService: OfferService,
   ) {
     super(logger);
     this.logger.info('Register routes for UserController…');
@@ -52,32 +49,6 @@ export class UserController extends BaseController {
         new ValidateObjectIdMiddleware('userId'),
         new DocumentExistsMiddleware(this.userService, 'User', 'userId'),
         new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'),
-      ]
-    });
-
-    this.addRoute({
-      path: '/:userId/favorites/:offerId',
-      method: HttpMethod.Post,
-      handler: this.addFavorite,
-      middlewares: [
-        //new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new ValidateObjectIdMiddleware('userId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
-        new DocumentExistsMiddleware(this.userService, 'User', 'userId')
-      ]
-    });
-
-    this.addRoute({
-      path: '/:userId/favorites/:offerId',
-      method: HttpMethod.Delete,
-      handler: this.deleteFavorite,
-      middlewares: [
-        //new PrivateRouteMiddleware(),
-        new ValidateObjectIdMiddleware('offerId'),
-        new ValidateObjectIdMiddleware('userId'),
-        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
-        new DocumentExistsMiddleware(this.userService, 'User', 'userId')
       ]
     });
   }
@@ -117,17 +88,5 @@ export class UserController extends BaseController {
     this.created(res, {
       filepath: req.file?.path
     });
-  }
-
-  public async addFavorite({params: {offerId, userId}}: Request<ParamUserAndOfferId>, res: Response): Promise<void> {
-    await this.userService.addFavorite(offerId, userId);
-
-    this.noContent(res, {});
-  }
-
-  public async deleteFavorite({params: {offerId, userId}}: Request<ParamUserAndOfferId>, res: Response): Promise<void> {
-    await this.userService.deleteFavorite(offerId, userId);
-
-    this.noContent(res, {});
   }
 }

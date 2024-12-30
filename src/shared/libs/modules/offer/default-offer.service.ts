@@ -78,4 +78,9 @@ export class DefaultOfferService implements OfferService {
     return offers
       .filter((offer) => (offer.cityName === city && offer.premium));
   }
+
+  public async checkDocumentAuthor(offerId: string, userId: string) {
+    const offer = await this.offerModel.findById(offerId);
+    return offer!.userId.toString() === userId;
+  }
 }

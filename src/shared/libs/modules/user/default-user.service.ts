@@ -12,7 +12,7 @@ export class DefaultUserService implements UserService {
 
   constructor(
     @inject(Component.Logger) private readonly logger: Logger,
-    @inject(Component.UserModel) private readonly model: types.ModelType<UserEntity>
+    @inject(Component.UserModel) private readonly model: types.ModelType<UserEntity>,
   ) {}
 
   public async create(dto: CreateUserDto, salt: string): Promise<DocumentType<UserEntity>> {
@@ -49,23 +49,6 @@ export class DefaultUserService implements UserService {
   }
 
   public async exists(documentId: string): Promise<boolean> {
-    this.logger.info('EEEEEEEEEEEExists started');
     return (await this.model.exists({_id: documentId}) !== null);
   }
-
-
-  public async addFavorite(offerId: string, userId: string): Promise<void> {
-    await this.model.updateOne(
-      {_id: userId},
-      { $addToSet: { favorites: offerId } }
-    );
-  }
-
-  public async deleteFavorite(offerId: string, userId: string): Promise<void> {
-    await this.model.updateOne(
-      {_id: userId},
-      { $pull: { favorites: offerId } }
-    );
-  }
-
 }
