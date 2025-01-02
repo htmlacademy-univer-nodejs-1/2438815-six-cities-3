@@ -48,6 +48,7 @@
     "class-validator": "^0.14.1",
     "convict": "^6.2.4",
     "convict-format-with-validator": "^6.2.0",
+    "cors": "^2.8.5",
     "cross-env": "^7.0.3",
     "dayjs": "1.11.10",
     "dotenv": "^16.4.5",
