@@ -1,6 +1,6 @@
 import { User } from '../../../types/user.type.js';
 import { UserType } from '../../../types/user-type.enum.js';
-import { defaultClasses, getModelForClass, prop, modelOptions, Ref } from '@typegoose/typegoose';
+import { defaultClasses, getModelForClass, prop, modelOptions, Ref} from '@typegoose/typegoose';
 import { createSHA256 } from '../../../helpers/index.js';
 import { OfferEntity } from '../offer/index.js';
 
@@ -21,19 +21,21 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
     type: String,
     minlength: [1, 'Min length for name is 1'],
     maxlength: [15, 'Max length for name is 15'],})
-  public userName = '';
+  public userName = 'userName';
 
   @prop({
     type: String,
     match: [/\.+(jpg|png)$/, 'Path must end to "jpg" or "png"'],
+    required: true,
   })
-  public avatarPath = '';
+  public avatarPath = '/default-pathes/avatar.jpg';
 
   @prop({
     type: String,
     unique: true,
     match: [/^([\w-\\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Email is incorrect'],
-    required: true,})
+    required: true,
+  })
   public email = '';
 
   @prop({
@@ -45,7 +47,7 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
   @prop({
     required: true,
   })
-  public userType!: UserType;
+  public userType: UserType;
 
   @prop({
     ref: 'OfferEntity',
@@ -68,6 +70,11 @@ export class UserEntity extends defaultClasses.TimeStamps implements User {
 
   public getPassword() {
     return this.password;
+  }
+
+  public verifyPassword(password: string, salt: string) {
+    const hashPassword = createSHA256(password, salt);
+    return hashPassword === this.password;
   }
 }
 

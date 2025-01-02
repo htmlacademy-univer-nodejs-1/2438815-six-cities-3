@@ -19,9 +19,6 @@ export const OfferValidationMessage = {
   premium: {
     invalidFormat: 'premium flag must be a boolean'
   },
-  favorites: {
-    invalidFormat: 'favorites flag must be a boolean'
-  },
   rating: {
     invalidFormat: 'rating must be a number',
     minValue: 'Minimum rating is 1',
@@ -51,7 +48,7 @@ export const OfferValidationMessage = {
     maxValue: 'Maximum price is 200000',
   },
   facilities: {
-    invalid: 'housingType must be from Facilities array',
+    invalid: 'facilities must be from Facilities array',
   },
   userId: {
     invalidFormat: 'userId field must be a valid id',

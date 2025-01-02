@@ -1,5 +1,5 @@
 import { Expose, Type } from 'class-transformer';
-import { UserRdo } from '../../user/user.rdo.js';
+import { UserRdo } from '../../user/rdo/user.rdo.js';
 import { HousingType } from '../../../../types/housing-type.enum.js';
 
 export class ListItemOfferRdo {
@@ -22,7 +22,7 @@ export class ListItemOfferRdo {
   public premium!: boolean;
 
   @Expose()
-  public favorites!: boolean;
+  public favoritesFlag!: boolean;
 
   @Expose()
   public rating!: number;

@@ -1,37 +1,36 @@
 # Получить предложение по id
-GET http://localhost:5000/offers/672f2581a954c44bc8fb748a HTTP/1.1
+GET http://localhost:5000/offers/6775e8a6106bdaa5e63b2abb HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFicmFjYWRhYnJhMUBtYWlsLnJ1IiwidXNlck5hbWUiOiJDYXB0YWluIEphY2siLCJpZCI6IjY3NzVhOGI3ZTIxOTNmOGUwZTM4YTZhZCIsImlhdCI6MTczNTc2NDE5NiwiZXhwIjoxNzM1OTM2OTk2fQ.ooSOKByEn__NGYZv0t2wsZXRKHu0s6tvI3UDvbkhkaw
 
 ###
 
 ## Получить список предложений
 GET http://localhost:5000/offers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFicmFjYWRhYnJhMUBtYWlsLnJ1IiwidXNlck5hbWUiOiJDYXB0YWluIEphY2siLCJpZCI6IjY3NzVhOGI3ZTIxOTNmOGUwZTM4YTZhZCIsImlhdCI6MTczNTc2NDE5NiwiZXhwIjoxNzM1OTM2OTk2fQ.ooSOKByEn__NGYZv0t2wsZXRKHu0s6tvI3UDvbkhkaw
 
 ###
 
 ## Создать новое предложение
 
 POST http://localhost:5000/offers HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFicmFjYWRhYnJhMUBtYWlsLnJ1IiwidXNlck5hbWUiOiJDYXB0YWluIEphY2siLCJpZCI6IjY3NzVhOGI3ZTIxOTNmOGUwZTM4YTZhZCIsImlhdCI6MTczNTc2NDE5NiwiZXhwIjoxNzM1OTM2OTk2fQ.ooSOKByEn__NGYZv0t2wsZXRKHu0s6tvI3UDvbkhkaw
 Content-Type: application/json
 
 {
-  "name": "Замок Дракулы-6",
+  "name": "Замок Дракулы-авторизованного-2",
   "description": "Чудесный замок в живописном месте с обаятельным соседом. Локация: Трансильвания.",
   "publicationDate": "1413-05-12T11:56:37.573Z",
   "cityName": "Amsterdam",
   "preview": "castle.png",
   "photos": ["murder1.png", "murder2.png", "murder3.png", "murder4.png", "murder5.png", "vampire.png"],
   "premium": false,
-  "favorites": false,
-  "rating": 5,
   "housingType": "apartment",
   "roomsCount": 8,
   "guestsCount": 1,
   "rentCost": 100000,
   "facilities": ["Fridge", "Breakfast"],
-  "userId": "672f2581a954c44bc8fb748a",
   "latitude": 52.370216,
   "longitude": 4.895168,
-  "rating": 4,
   "commentsCount": 0
 }
 
@@ -40,18 +39,20 @@ Content-Type: application/json
 
 ## Удалить предложение по id
 
-DELETE http://localhost:5000/offers/6771be67c4c9e681775fc742 HTTP/1.1
+DELETE http://localhost:5000/offers/6775e2f0ffb76e09a6b47c75 HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InRvcmFuc0BvdmVybG9vay5uZXQiLCJ1c2VyTmFtZSI6IkNhcHRhaW4gSmFjayIsImlkIjoiNjc3MTYzYjg4ZWIxNTgxNGYzMzllNjA5IiwiaWF0IjoxNzM1NTk2MDY1LCJleHAiOjE3MzU3Njg4NjV9.o1FIsPTyjTehTq22J4CCgDQ8_C-dOAUqHHEdQOaG4uk
 
 ###
 
 ## Обновить предложение по id
 
-PATCH http://localhost:5000/offers/6772823c9ee9074cedc0cfb0 HTTP/1.1
+PATCH http://localhost:5000/offers/6775e2f0ffb76e09a6b47c75 HTTP/1.1
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFicmFjYWRhYnJhMUBtYWlsLnJ1IiwidXNlck5hbWUiOiJDYXB0YWluIEphY2siLCJpZCI6IjY3NzVhOGI3ZTIxOTNmOGUwZTM4YTZhZCIsImlhdCI6MTczNTc2NDE5NiwiZXhwIjoxNzM1OTM2OTk2fQ.ooSOKByEn__NGYZv0t2wsZXRKHu0s6tvI3UDvbkhkaw
+
 
 {
-  "favorites": true,
-  "name": "Замок Ван Хельсинга-4"
+  "name": "Замок Ван Хельсинга-авторизованного"
 }
 
 ###
@@ -59,10 +60,6 @@ Content-Type: application/json
 ## Получить список премиальных предложений по 1 городу
 GET http://localhost:5000/offers/premium/Amsterdam HTTP/1.1
 
-###
-
-## Получить список избранного по пользователю
-GET http://localhost:5000/offers/672f2581a954c44bc8fb748a/favorites HTTP/1.1
 
 ###
 
