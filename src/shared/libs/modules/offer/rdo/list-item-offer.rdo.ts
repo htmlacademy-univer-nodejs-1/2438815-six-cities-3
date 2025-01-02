@@ -22,7 +22,7 @@ export class ListItemOfferRdo {
   public premium!: boolean;
 
   @Expose()
-  public favorites!: boolean;
+  public favoritesFlag!: boolean;
 
   @Expose()
   public rating!: number;

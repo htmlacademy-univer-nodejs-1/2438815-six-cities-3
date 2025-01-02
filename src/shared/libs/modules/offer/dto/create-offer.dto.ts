@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, IsLatitude, IsLongitude, IsNumber, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, IsLatitude, IsLongitude, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { CityNames, Facilities, HousingType } from '../../../../types/index.js';
 import { OfferValidationMessage } from './offer-validation.messages.js';
 
@@ -25,14 +25,6 @@ export class CreateOfferDto {
 
   @IsBoolean({message: OfferValidationMessage.premium.invalidFormat})
   public premium!: boolean;
-
-  @IsBoolean({message: OfferValidationMessage.favorites.invalidFormat})
-  public favorites!: boolean;
-
-  @IsNumber({}, {message: OfferValidationMessage.rating.invalidFormat})
-  @Min(1, {message: OfferValidationMessage.rating.minValue})
-  @Max(5, {message: OfferValidationMessage.rating.maxValue})
-  public rating!: number;
 
   @IsEnum(HousingType, {message: OfferValidationMessage.housingType.invalid})
   public housingType!: HousingType;

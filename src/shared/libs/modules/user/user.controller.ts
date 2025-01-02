@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { Request, Response } from 'express';
-import { BaseController, DocumentExistsMiddleware, HttpError, HttpMethod, UploadFileMiddleware, ValidateDtoMiddleware, ValidateObjectIdMiddleware } from '../../../../rest/index.js';
+import { BaseController, DocumentExistsMiddleware, HttpError, HttpMethod, PrivateRouteMiddleware, UploadFileMiddleware, ValidateDtoMiddleware, ValidateObjectIdMiddleware } from '../../../../rest/index.js';
 import { Logger } from '../../logger/logger.interface.js';
 import { Component } from '../../../types/component.enum.js';
 import { CreateUserRequest } from './request-types/create-user-request.type.js';
@@ -14,6 +14,9 @@ import { LoginUserDto } from './dto/login-user.dto.js';
 import { CreateUserDto } from './dto/create-user.dto.js';
 import { AuthService } from '../auth/index.js';
 import { LoggedUserRdo } from './rdo/logged-user.rdo.js';
+import { ParamOfferId } from '../offer/inner-params-types/params.js';
+import { OfferService } from '../offer/offer-service.interface.js';
+import { ListItemOfferRdo } from '../offer/rdo/list-item-offer.rdo.js';
 
 @injectable()
 export class UserController extends BaseController {
@@ -22,6 +25,7 @@ export class UserController extends BaseController {
     @inject(Component.UserService) private readonly userService: UserService,
     @inject(Component.Config) private readonly configService: Config<RestSchema>,
     @inject(Component.AuthService) private readonly authService: AuthService,
+    @inject(Component.OfferService) private readonly offerService: OfferService,
   ) {
     super(logger);
     this.logger.info('Register routes for UserController…');
@@ -39,6 +43,37 @@ export class UserController extends BaseController {
       method: HttpMethod.Post,
       handler: this.login,
       middlewares: [new ValidateDtoMiddleware(LoginUserDto)]
+    });
+
+    this.addRoute({
+      path: '/favorites',
+      method: HttpMethod.Get,
+      handler: this.findFavorites,
+      middlewares: [
+        new PrivateRouteMiddleware(),
+      ]
+    });
+
+    this.addRoute({
+      path: '/favorites/:offerId',
+      method: HttpMethod.Patch,
+      handler: this.pushFavoriteOffer,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new PrivateRouteMiddleware(),
+      ]
+    });
+
+    this.addRoute({
+      path: '/favorites/:offerId',
+      method: HttpMethod.Delete,
+      handler: this.pullFavoriteOffer,
+      middlewares: [
+        new ValidateObjectIdMiddleware('offerId'),
+        new DocumentExistsMiddleware(this.offerService, 'Offer', 'offerId'),
+        new PrivateRouteMiddleware(),
+      ]
     });
 
     this.addRoute({
@@ -108,5 +143,22 @@ export class UserController extends BaseController {
     }
 
     this.ok(res, fillDTO(LoggedUserRdo, foundedUser));
+  }
+
+  public async pushFavoriteOffer({ params, tokenPayload }: Request<ParamOfferId>, res: Response) {
+    await this.userService.pushFavoriteOffer(params.offerId, tokenPayload.id);
+    const user = await this.userService.findByEmail(tokenPayload.email);
+    this.ok(res, fillDTO(UserRdo, user));
+  }
+
+  public async pullFavoriteOffer({ params, tokenPayload }: Request<ParamOfferId>, res: Response) {
+    await this.userService.pullFavoriteOffer(params.offerId, tokenPayload.id);
+    const user = await this.userService.findByEmail(tokenPayload.email);
+    this.ok(res, fillDTO(UserRdo, user));
+  }
+
+  public async findFavorites({tokenPayload}: Request, res: Response) {
+    const offers = await this.userService.findFavorites(tokenPayload.id);
+    this.ok(res, fillDTO(ListItemOfferRdo, offers));
   }
 }

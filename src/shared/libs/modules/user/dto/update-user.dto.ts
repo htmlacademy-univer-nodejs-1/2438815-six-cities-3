@@ -17,9 +17,6 @@ export class UpdateUserDto {
   public avatar?: string;
 
   @IsOptional()
-  public favoriteOffers?: string[];
-
-  @IsOptional()
   @IsString({ message: CreateUserValidationMessage.password.invalidFormat })
   @Length(6, 12, { message: CreateUserValidationMessage.password.lengthField })
   public password?: string;

@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, IsLatitude, IsLongitude, IsMongoId, IsNumber, IsOptional, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, IsLatitude, IsLongitude, IsOptional, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { CityNames, Facilities, HousingType } from '../../../../types/index.js';
 import { OfferValidationMessage } from './offer-validation.messages.js';
 
@@ -34,16 +34,6 @@ export class UpdateOfferDto {
   public premium!: boolean;
 
   @IsOptional()
-  @IsBoolean({message: OfferValidationMessage.favorites.invalidFormat})
-  public favorites!: boolean;
-
-  @IsOptional()
-  @IsNumber({}, {message: OfferValidationMessage.rating.invalidFormat})
-  @Min(1, {message: OfferValidationMessage.rating.minValue})
-  @Max(5, {message: OfferValidationMessage.rating.maxValue})
-  public rating!: number;
-
-  @IsOptional()
   @IsEnum(HousingType, {message: OfferValidationMessage.housingType.invalid})
   public housingType!: HousingType;
 
@@ -70,19 +60,10 @@ export class UpdateOfferDto {
   public facilities!: Facilities[];
 
   @IsOptional()
-  @IsMongoId({ message: OfferValidationMessage.userId.invalidFormat })
-  public userId!: string;
-
-  @IsOptional()
   @IsLatitude({ message: OfferValidationMessage.latitude.invalidFormat })
   public latitude!: number;
 
   @IsOptional()
   @IsLongitude({ message: OfferValidationMessage.longitude.invalidFormat })
   public longitude!: number;
-
-  @IsOptional()
-  @IsInt({message: OfferValidationMessage.commentsCount.invalidFormat})
-  @Min(0, {message: OfferValidationMessage.commentsCount.minValue})
-  public commentsCount!: number;
 }

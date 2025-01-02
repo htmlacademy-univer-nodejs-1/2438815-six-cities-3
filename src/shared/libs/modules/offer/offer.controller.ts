@@ -19,7 +19,7 @@ export default class OfferController extends BaseController {
   constructor(
     @inject(Component.Logger) protected logger: Logger,
     @inject(Component.OfferService) private readonly offerService: OfferService,
-    @inject(Component.CommentService) private readonly commentService: CommentService
+    @inject(Component.CommentService) private readonly commentService: CommentService,
   ) {
     super(logger);
 
@@ -37,7 +37,10 @@ export default class OfferController extends BaseController {
       path: '/',
       method: HttpMethod.Post,
       handler: this.create,
-      middlewares: [new ValidateDtoMiddleware(CreateOfferDto)]
+      middlewares: [
+        new PrivateRouteMiddleware(),
+        new ValidateDtoMiddleware(CreateOfferDto)
+      ]
     });
 
     this.addRoute({
@@ -72,14 +75,16 @@ export default class OfferController extends BaseController {
     });
   }
 
-  public async findOne({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
+  public async findOne({ params, tokenPayload }: Request<ParamOfferId>, res: Response): Promise<void> {
     const { offerId } = params;
-    const offer = await this.offerService.findById(offerId);
+    const offer = tokenPayload ? await this.offerService.findById(offerId, tokenPayload.id) : await this.offerService.findById(offerId);
     this.ok(res, fillDTO(OfferRdo, offer));
   }
 
-  public async findAll(_req: Request, res: Response) {
-    const offers = await this.offerService.find();
+  public async findAll({query, tokenPayload}: Request, res: Response) {
+
+    const count = query.count ? Number(query.count) : undefined;
+    const offers = tokenPayload ? await this.offerService.find(count, tokenPayload.id) : await this.offerService.find(count);
     this.ok(res, fillDTO(ListItemOfferRdo, offers));
   }
 
@@ -97,6 +102,7 @@ export default class OfferController extends BaseController {
   public async delete({ params }: Request<ParamOfferId>, res: Response): Promise<void> {
     const { offerId } = params;
     const offer = await this.offerService.deleteById(offerId);
+    await this.commentService.deleteByOfferId(offerId);
     this.noContent(res, offer);
   }
 

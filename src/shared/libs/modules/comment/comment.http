@@ -2,13 +2,13 @@
 ## Создать комментарий
 
 POST http://localhost:5000/comments HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFicmFjYWRhYnJhMUBtYWlsLnJ1IiwidXNlck5hbWUiOiJDYXB0YWluIEphY2siLCJpZCI6IjY3NzVhOGI3ZTIxOTNmOGUwZTM4YTZhZCIsImlhdCI6MTczNTc2NDE5NiwiZXhwIjoxNzM1OTM2OTk2fQ.ooSOKByEn__NGYZv0t2wsZXRKHu0s6tvI3UDvbkhkaw
 Content-Type: application/json
 
 {
-  "text": "Сколько охотников приходится на квадратный метр????",
-  "offerId": "67727c48cd5746126de7ebc5",
-  "userId": "677163f98eb15814f339e60c",
-  "rating": 5
+  "text": "Сколько вампиров приходится на квадратный метр????",
+  "offerId": "6775b3ab77c2a482bcc55c68",
+  "rating": 2
 }
 
 ###

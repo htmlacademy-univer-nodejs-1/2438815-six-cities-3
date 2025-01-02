@@ -65,14 +65,9 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public premium = false;
 
   @prop({
-    type: Boolean,
-    required: true,
-  })
-  public favorites = false;
-
-  @prop({
     type: Number,
     required: true,
+    default: 5,
   })
   public rating!: number;
 
@@ -115,7 +110,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public facilities!: Facilities[];
 
   @prop({
-    ref: UserEntity,
+    ref: 'UserEntity',
     required: true,
   })
   public userId!: Ref<UserEntity>;
@@ -147,7 +142,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     this.preview = offerData.preview;
     this.photos = offerData.photos;
     this.premium = offerData.premium;
-    this.favorites = offerData.favorites;
     this.rating = offerData.rating;
     this.housingType = offerData.housingType;
     this.roomsCount = offerData.roomsCount;

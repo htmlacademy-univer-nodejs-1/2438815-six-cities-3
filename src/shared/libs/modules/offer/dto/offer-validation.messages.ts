@@ -19,9 +19,6 @@ export const OfferValidationMessage = {
   premium: {
     invalidFormat: 'premium flag must be a boolean'
   },
-  favorites: {
-    invalidFormat: 'favorites flag must be a boolean'
-  },
   rating: {
     invalidFormat: 'rating must be a number',
     minValue: 'Minimum rating is 1',
