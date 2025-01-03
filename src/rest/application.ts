@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import express, { Express } from 'express';
+import cors from 'cors';
 import { inject, injectable } from 'inversify';
 import { Config, RestSchema } from './config/index.js';
 import { Logger } from '../shared/libs/logger/index.js';
@@ -47,6 +48,7 @@ export class Application {
       express.static(this.config.get('STATIC_DIRECTORY_PATH'))
     );
     this.server.use(authenticateMiddleware.execute.bind(authenticateMiddleware));
+    this.server.use(cors());
   }
 
   private async _initExceptionFilters() {
