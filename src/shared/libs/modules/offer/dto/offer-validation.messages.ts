@@ -53,12 +53,6 @@ export const OfferValidationMessage = {
   userId: {
     invalidFormat: 'userId field must be a valid id',
   },
-  latitude: {
-    invalidFormat: 'latitude must be a valid latitude',
-  },
-  longitude: {
-    invalidFormat: 'longitude must be a valid latitude',
-  },
   commentsCount: {
     invalidFormat: 'commentsCount must be an integer',
     minValue: 'Minimum price is 0',

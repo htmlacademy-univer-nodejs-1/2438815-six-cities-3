@@ -65,13 +65,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   public premium = false;
 
   @prop({
-    type: Number,
-    required: true,
-    default: 5,
-  })
-  public rating!: number;
-
-  @prop({
     type: String,
     enum: HousingType,
     required: true,
@@ -118,6 +111,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({
     type: Number,
     required: true,
+    default: 0,
   })
   public commentsCount = 0;
 
@@ -142,7 +136,6 @@ export class OfferEntity extends defaultClasses.TimeStamps {
     this.preview = offerData.preview;
     this.photos = offerData.photos;
     this.premium = offerData.premium;
-    this.rating = offerData.rating;
     this.housingType = offerData.housingType;
     this.roomsCount = offerData.roomsCount;
     this.guestsCount = offerData.guestsCount;

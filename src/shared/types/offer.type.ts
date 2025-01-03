@@ -1,17 +1,16 @@
+import { CreateUserDto } from '../libs/modules/user/dto/create-user.dto.js';
+import { CityNames } from './city-names.enum.js';
 import { Facilities } from './facilities.enum.js';
 import { HousingType } from './housing-type.enum.js';
-import { User } from './user.type.js';
 
 export type Offer = {
   name: string;
   description: string;
   publicationDate: Date;
-  cityName: string;
+  cityName: CityNames;
   preview: string;
   photos: string[];
   premium: boolean;
-  favorites: boolean;
-  rating: number;
   housingType: HousingType;
   roomsCount: number;
   guestsCount: number;
@@ -19,6 +18,5 @@ export type Offer = {
   facilities: Facilities[];
   latitude: number;
   longitude: number;
-  author: User;
-  commentsCount: number;
+  author: CreateUserDto;
 }

@@ -6,7 +6,7 @@ import { DefaultUserService, UserModel, UserService } from '../../shared/libs/mo
 import { DefaultOfferService, OfferModel, OfferService } from '../../shared/libs/modules/offer/index.js';
 import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
 import { Logger, PinoLogger } from '../../shared/libs/logger/index.js';
-import {DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD} from './consts.js';
+import {DEFAULT_DB_PORT} from './consts.js';
 import { Offer } from '../../shared/types/index.js';
 
 export class ImportCommand implements Command {
@@ -22,8 +22,8 @@ export class ImportCommand implements Command {
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new PinoLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
-    this.userService = new DefaultUserService(this.logger, UserModel);
+    this.offerService = new DefaultOfferService(this.logger, OfferModel, UserModel);
+    this.userService = new DefaultUserService(this.logger, UserModel, OfferModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
 
@@ -41,7 +41,6 @@ export class ImportCommand implements Command {
   private async saveOffer(offer: Offer) {
     const user = await this.userService.findOrCreate({
       ...offer.author,
-      password: DEFAULT_USER_PASSWORD
     }, this.salt);
 
 
@@ -53,17 +52,12 @@ export class ImportCommand implements Command {
       preview: offer.preview,
       photos: offer.photos,
       premium: offer.premium,
-      favorites: offer.favorites,
-      rating: offer.rating,
       housingType: offer.housingType,
       roomsCount: offer.roomsCount,
       guestsCount: offer.guestsCount,
       rentCost: offer.rentCost,
       facilities: offer.facilities,
-      userId: user.id,
-      latitude: offer.latitude,
-      longitude: offer.longitude,
-      commentsCount: offer.commentsCount,
+      userId: user.id
     });
 
   }

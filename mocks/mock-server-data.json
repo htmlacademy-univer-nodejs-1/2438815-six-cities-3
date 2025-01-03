@@ -16,14 +16,6 @@
       "the_fifth_long_full_description",
       "the_sixth_long_full_description"
     ],
-    "cityNames": [
-      "Paris",
-      "Cologne",
-      "Brussels",
-      "Amsterdam",
-      "Hamburg",
-      "Dusseldorf"
-    ],
     "previews": [
       "preview1.jpg",
       "preview2.jpg",
@@ -53,10 +45,10 @@
       "apartment-18.jpg"
     ],
     "housingTypes": [
-      "apartment",
-      "house",
-      "room",
-      "hotel"
+      "Apartment",
+      "House",
+      "Room",
+      "Hotel"
     ],
     "facilities": [
       "Breakfast",
@@ -83,41 +75,25 @@
       "email5@gmail.com",
       "email6@gmail.com"
     ],
-    "avatarPathes": [
-      "avatar_path1.jpg",
-      "avatar_path2.jpg",
-      "avatar_path3.jpg",
-      "avatar_path4.jpg",
-      "avatar_path5.jpg",
-      "avatar_path6.jpg"
-    ],
     "passwords": [
-      "password1_salt!@#",
-      "password2_salt$%^",
-      "password3_salt&*(",
-      "password4_salt)_+",
-      "password5_salt~`",
-      "password6_salt-={}"
+      "password1",
+      "password2",
+      "password3",
+      "password4",
+      "password5",
+      "password6"
     ],
     "userTypes": [
       "Standart",
       "Pro"
     ],
-    "latitudes": [
-      "48.85661",
-      "50.938361",
-      "50.846557",
-      "52.370216",
-      "53.550341",
-      "51.225402"
-    ],
-    "longitudes": [
-      "2.351499",
-      "6.959974",
-      "4.351697",
-      "4.895168",
-      "10.000654",
-      "6.776314"
+    "cities": [
+      "Paris",
+      "Cologne",
+      "Brussels",
+      "Amsterdam",
+      "Hamburg",
+      "Dusseldorf"
     ]
   }
 }

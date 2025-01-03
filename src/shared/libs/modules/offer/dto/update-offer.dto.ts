@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, IsLatitude, IsLongitude, IsOptional, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, IsOptional, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { CityNames, Facilities, HousingType } from '../../../../types/index.js';
 import { OfferValidationMessage } from './offer-validation.messages.js';
 
@@ -58,12 +58,4 @@ export class UpdateOfferDto {
   @IsOptional()
   @IsEnum(Facilities, {message: OfferValidationMessage.facilities.invalid})
   public facilities!: Facilities[];
-
-  @IsOptional()
-  @IsLatitude({ message: OfferValidationMessage.latitude.invalidFormat })
-  public latitude!: number;
-
-  @IsOptional()
-  @IsLongitude({ message: OfferValidationMessage.longitude.invalidFormat })
-  public longitude!: number;
 }
