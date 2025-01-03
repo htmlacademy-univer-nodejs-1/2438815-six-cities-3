@@ -4,8 +4,8 @@ import { BaseController, DocumentExistsMiddleware, HttpError, HttpMethod, Privat
 import { Logger } from '../../logger/logger.interface.js';
 import { Component } from '../../../types/component.enum.js';
 import { CreateUserRequest } from './request-types/create-user-request.type.js';
-import { UserService } from './index.js';
-import { Config, RestSchema } from '../../config/index.js';
+import { DEFAULT_AVATAR_FILE_NAME, UserService } from './index.js';
+import { Config, RestSchema } from '../../../../rest/config/index.js';
 import { StatusCodes } from 'http-status-codes';
 import { fillDTO } from '../../../helpers/index.js';
 import { UserRdo } from './rdo/user.rdo.js';
@@ -17,6 +17,7 @@ import { LoggedUserRdo } from './rdo/logged-user.rdo.js';
 import { ParamOfferId } from '../offer/inner-params-types/params.js';
 import { OfferService } from '../offer/offer-service.interface.js';
 import { ListItemOfferRdo } from '../offer/rdo/list-item-offer.rdo.js';
+import { UploadUserAvatarRdo } from './rdo/upload-user-avatar.rdo.js';
 
 @injectable()
 export class UserController extends BaseController {
@@ -77,12 +78,10 @@ export class UserController extends BaseController {
     });
 
     this.addRoute({
-      path: '/:userId/avatar',
-      method: HttpMethod.Post,
+      path: '/avatar',
+      method: HttpMethod.Patch,
       handler: this.uploadAvatar,
       middlewares: [
-        new ValidateObjectIdMiddleware('userId'),
-        new DocumentExistsMiddleware(this.userService, 'User', 'userId'),
         new PrivateRouteMiddleware(),
         new UploadFileMiddleware(this.configService.get('UPLOAD_DIRECTORY'), 'avatar'),
       ]
@@ -119,17 +118,15 @@ export class UserController extends BaseController {
   ): Promise<void> {
     const user = await this.authService.verify(body);
     const token = await this.authService.authenticate(user);
-    const responseData = fillDTO(LoggedUserRdo, {
-      email: user.email,
-      token,
-    });
-    this.ok(res, responseData);
+    const responseData = fillDTO(LoggedUserRdo, user);
+    this.ok(res, Object.assign(responseData, { token }));
   }
 
-  public async uploadAvatar(req: Request, res: Response) {
-    this.created(res, {
-      filepath: req.file?.path
-    });
+  public async uploadAvatar({ tokenPayload, file }: Request, res: Response) {
+    const avatarPath = file?.filename ?? DEFAULT_AVATAR_FILE_NAME;
+    const uploadFile = { avatarPath: avatarPath };
+    await this.userService.updateById(tokenPayload.id, uploadFile);
+    this.created(res, fillDTO(UploadUserAvatarRdo, { filepath: uploadFile.avatarPath }));
   }
 
   public async checkAuthenticate({ tokenPayload: { email }}: Request, res: Response) {

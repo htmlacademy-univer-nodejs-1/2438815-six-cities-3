@@ -2,9 +2,9 @@ import 'reflect-metadata';
 import { inject, injectable } from 'inversify';
 import { config } from 'dotenv';
 import { Config } from './config.interface.js';
-import { Logger } from '../logger/index.js';
+import { Logger } from '../../shared/libs/logger/index.js';
 import { RestSchema, configRestSchema } from './rest.schema.js';
-import { Component } from '../../types/index.js';
+import { Component } from '../../shared/types/index.js';
 
 @injectable()
 export class RestConfig implements Config<RestSchema> {

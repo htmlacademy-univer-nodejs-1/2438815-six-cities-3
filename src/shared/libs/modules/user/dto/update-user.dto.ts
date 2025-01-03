@@ -14,7 +14,7 @@ export class UpdateUserDto {
   public username?: string;
 
   @IsOptional()
-  public avatar?: string;
+  public avatarPath?: string;
 
   @IsOptional()
   @IsString({ message: CreateUserValidationMessage.password.invalidFormat })
@@ -23,5 +23,5 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsEnum(UserType, {message: CreateUserValidationMessage.userType.invalid})
-  public userType!: UserType;
+  public userType?: UserType;
 }
