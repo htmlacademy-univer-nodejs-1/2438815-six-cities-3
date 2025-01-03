@@ -37,7 +37,6 @@ export class DefaultOfferService implements OfferService {
     if (favorites) {
       favoritesFlag = !!favorites.find((id) => id === offerId);
     }
-    console.log(favorites);
 
     const [offerOrNull] = await this.offerModel
       .aggregate([{

@@ -15,7 +15,7 @@ export class CreateOfferDto {
   public publicationDate!: Date;
 
   @IsEnum(CityNames, {message: OfferValidationMessage.cityName.invalid})
-  public cityName!: CityNames;
+  public cityName!: string;
 
   public preview!: string;
 

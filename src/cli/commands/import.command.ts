@@ -22,8 +22,8 @@ export class ImportCommand implements Command {
     this.onCompleteImport = this.onCompleteImport.bind(this);
 
     this.logger = new PinoLogger();
-    this.offerService = new DefaultOfferService(this.logger, OfferModel);
-    this.userService = new DefaultUserService(this.logger, UserModel);
+    this.offerService = new DefaultOfferService(this.logger, OfferModel, UserModel);
+    this.userService = new DefaultUserService(this.logger, UserModel, OfferModel);
     this.databaseClient = new MongoDatabaseClient(this.logger);
   }
 
@@ -53,8 +53,6 @@ export class ImportCommand implements Command {
       preview: offer.preview,
       photos: offer.photos,
       premium: offer.premium,
-      favorites: offer.favorites,
-      rating: offer.rating,
       housingType: offer.housingType,
       roomsCount: offer.roomsCount,
       guestsCount: offer.guestsCount,

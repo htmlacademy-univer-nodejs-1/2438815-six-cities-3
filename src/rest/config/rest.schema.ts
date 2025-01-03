@@ -57,7 +57,7 @@ export const configRestSchema = convict<RestSchema>({
     doc: 'Name of db (MongoDB)',
     format: String,
     env: 'DB_NAME',
-    default: 'six-sities-db'
+    default: 'six-cities-db'
   },
   UPLOAD_DIRECTORY: {
     doc: 'Directory for upload files',
