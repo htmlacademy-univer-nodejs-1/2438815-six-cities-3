@@ -111,6 +111,7 @@ export class OfferEntity extends defaultClasses.TimeStamps {
   @prop({
     type: Number,
     required: true,
+    default: 0,
   })
   public commentsCount = 0;
 

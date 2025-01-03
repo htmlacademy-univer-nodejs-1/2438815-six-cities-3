@@ -6,7 +6,7 @@ import { DefaultUserService, UserModel, UserService } from '../../shared/libs/mo
 import { DefaultOfferService, OfferModel, OfferService } from '../../shared/libs/modules/offer/index.js';
 import { DatabaseClient, MongoDatabaseClient } from '../../shared/libs/database-client/index.js';
 import { Logger, PinoLogger } from '../../shared/libs/logger/index.js';
-import {DEFAULT_DB_PORT, DEFAULT_USER_PASSWORD} from './consts.js';
+import {DEFAULT_DB_PORT} from './consts.js';
 import { Offer } from '../../shared/types/index.js';
 
 export class ImportCommand implements Command {
@@ -41,7 +41,6 @@ export class ImportCommand implements Command {
   private async saveOffer(offer: Offer) {
     const user = await this.userService.findOrCreate({
       ...offer.author,
-      password: DEFAULT_USER_PASSWORD
     }, this.salt);
 
 
@@ -58,10 +57,7 @@ export class ImportCommand implements Command {
       guestsCount: offer.guestsCount,
       rentCost: offer.rentCost,
       facilities: offer.facilities,
-      userId: user.id,
-      latitude: offer.latitude,
-      longitude: offer.longitude,
-      commentsCount: offer.commentsCount,
+      userId: user.id
     });
 
   }

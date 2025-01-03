@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, IsLatitude, IsLongitude, Max, MaxLength, Min, MinLength } from 'class-validator';
+import { ArrayMaxSize, ArrayMinSize, IsBoolean, IsDateString, IsEnum, IsInt, Max, MaxLength, Min, MinLength } from 'class-validator';
 import { CityNames, Facilities, HousingType } from '../../../../types/index.js';
 import { OfferValidationMessage } from './offer-validation.messages.js';
 
@@ -48,14 +48,4 @@ export class CreateOfferDto {
   public facilities!: Facilities[];
 
   public userId!: string;
-
-  @IsLatitude({ message: OfferValidationMessage.latitude.invalidFormat })
-  public latitude!: number;
-
-  @IsLongitude({ message: OfferValidationMessage.longitude.invalidFormat })
-  public longitude!: number;
-
-  @IsInt({message: OfferValidationMessage.commentsCount.invalidFormat})
-  @Min(0, {message: OfferValidationMessage.commentsCount.minValue})
-  public commentsCount!: number;
 }

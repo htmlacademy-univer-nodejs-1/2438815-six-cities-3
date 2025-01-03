@@ -13,7 +13,7 @@ export class CreateUserDto {
 
   public avatarPath!: string;
 
-  @IsEnum(UserType, {message: CreateUserValidationMessage.userType.invalid})
+  @IsEnum(UserType, {message: CreateUserValidationMessage.userType.invalidFormat})
   public userType!: UserType;
 
   @IsString({ message: CreateUserValidationMessage.password.invalidFormat })

@@ -8,8 +8,7 @@ export const CreateUserValidationMessage = {
     invalidFormat: 'email must be a valid address'
   },
   userType: {
-    invalidFormat: 'userType is required',
-    invalid: 'userType must be from names of elements from userTypes enum',
+    invalidFormat: 'userType is required and must be from names of elements from userTypes enum',
   },
   password: {
     invalidFormat: 'password is required',

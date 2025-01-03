@@ -8,7 +8,7 @@ Content-Type: application/json
   "userName": "Просто Уилл",
   "email": "turner@mail.ru",
   "password": "iloveeliza",
-  "userType": "обычный"
+  "userType": "pro"
 }
 
 ###
@@ -42,7 +42,7 @@ Content-Type: image/png
 
 ## Проверить токен пользователя
 GET http://localhost:5000/users/login HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFicmFjYWRhYnJhMUBtYWlsLnJ1IiwidXNlck5hbWUiOiJDYXB0YWluIEphY2siLCJpZCI6IjY3NzVhOGI3ZTIxOTNmOGUwZTM4YTZhZCIsImlhdCI6MTczNTc2NDE5NiwiZXhwIjoxNzM1OTM2OTk2fQ.ooSOKByEn__NGYZv0t2wsZXRKHu0s6tvI3UDvbkhkaw
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6ImFicmFjYWRhYnJhNUBtYWlsLnJ1IiwidXNlck5hbWUiOiJDYXB0YWluIEphY2siLCJpZCI6IjY3NzgwZTY0MWExMTgyY2RmYmFlMzA4OSIsImlhdCI6MTczNTkyMTc2MCwiZXhwIjoxNzM2MDk0NTYwfQ.n6SVfnHhebuRb03WlcxFKxdeDWfp0Vsj2dreXbcPeUA
 
 ###
 

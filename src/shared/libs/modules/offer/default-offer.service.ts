@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { OfferService } from './offer-service.interface.js';
-import { Component } from '../../../types/index.js';
+import { Cities, CityNames, Component } from '../../../types/index.js';
 import { Logger } from '../../logger/index.js';
 import { DocumentType, types } from '@typegoose/typegoose';
 import { OfferEntity } from './offer.entity.js';
@@ -23,7 +23,9 @@ export class DefaultOfferService implements OfferService {
   ) {}
 
   public async create(dto: CreateOfferDto): Promise<DocumentType<OfferEntity>> {
-    const result = await this.offerModel.create(dto);
+    const cityName = dto.cityName as CityNames;
+    const cityWithCoords = Cities.find((city) => city.name === cityName);
+    const result = await this.offerModel.create({...dto, latitude : cityWithCoords?.latitude, longitude: cityWithCoords?.longitude});
     this.logger.info(`New offer created: ${dto.name}`);
 
     return result;
@@ -96,7 +98,6 @@ export class DefaultOfferService implements OfferService {
   public async find(count?: number, userId?: string): Promise<DocumentType<OfferEntity>[]> {
     const user = await this.userModel.findById(userId);
     const favorites = user?.favorites.map((offer) => offer._id.toString());
-    console.log(favorites);
     return this.offerModel
       .aggregate([{
         $lookup: {
@@ -154,7 +155,7 @@ export class DefaultOfferService implements OfferService {
       { $limit: count ?? DEFAULT_OFFER_COUNT },
       {
         $sort: {
-          createdAt: SortType.Down
+          publicationDate : SortType.Down
         }
       }]).exec();
   }
@@ -184,8 +185,8 @@ export class DefaultOfferService implements OfferService {
       }}).exec();
   }
 
-  public async findPremiumByCity(city: string) {
-    const offers = await this.find(DEFAULT_CITY_OFFER_COUNT);
+  public async findPremiumByCity(city: string, userId?: string) {
+    const offers = userId ? await this.find(DEFAULT_CITY_OFFER_COUNT, userId) : await this.find(DEFAULT_CITY_OFFER_COUNT);
     return offers
       .filter((offer) => (offer.cityName === city && offer.premium));
   }
